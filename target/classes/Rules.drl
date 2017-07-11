@@ -1,0 +1,734 @@
+
+package org.silab.rules
+ 
+import org.silab.expertsystem.Player
+import org.silab.expertsystem.Game
+
+rule "Bad start of PG"
+lock-on-active true
+    when
+        u : Game(minut < 2,rezultat<-7,plej.indexForme < 1,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme plejmejkera je manji od jedinice, pa je stoga najbolje promeniti trenutnog pleja rezervnim plejmejkom.");
+        update( u );
+end
+
+rule "Los pocetak beka"
+lock-on-active true
+    when
+        u : Game(minut < 2,rezultat<-7,bek.indexForme < 1,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);
+    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme beka je manji od jedinice, pa je stoga najbolje promeniti trenutnog beka rezervnim bekom.");	
+        update( u );
+end
+
+rule "Los pocetak krilo"
+lock-on-active true
+    when
+        u : Game(minut < 2,rezultat<-7,krilo.indexForme < 1,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);
+    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme krila je manji od jedinice, pa je stoga najbolje promeniti trenutno krilo rezervnim krilo.");		
+        update( u );
+end
+
+rule "Los pocetak krilni centar"
+lock-on-active true
+    when
+        u : Game(minut < 2,rezultat<-7,krilniCentar.indexForme < 1,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getRezervniKrilniCentar());
+    	u.setRezervniKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme krilnog centra je manji od jedinice, pa je stoga najbolje promeniti trenutnog krilnog centra rezervnim krilnim centrom.");	
+        update( u );
+end
+
+rule "Los pocetak centar"
+lock-on-active true
+    when
+        u : Game(minut < 2,rezultat<-7,centar.indexForme < 1,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setRezervniCentar(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme centra je manji od jedinice, pa je stoga najbolje promeniti trenutnog centra rezervnim centrom.");	
+        update( u );
+end
+
+rule "Losa igra pleja i bolja pleja/beka"
+lock-on-active true
+    when
+        u : Game(plej.indexForme < -10,plejBek.indexForme > -10,plejBek.povredjen==false,plejBek.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getPlejBek());
+    	u.setPgBek(pomocna);	
+    	u.dodajObjasnjenje("Trenutni plejmejker je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni plejmejker/bek je u boljoj formi, najbolje je promeniti trenutnoj plejmejkera rezervnim igračem koji može da igra i na poziciji plejmejkera.");	
+        update( u );
+end
+
+rule "Losa igra pleja i bolja rezervnog pleja"
+lock-on-active true
+    when
+        u : Game(plej.indexForme < -10,rezervniPlej.indexForme > -10,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Trenutni plejmejker je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni plejmejker je u boljoj formi, najbolje je promeniti trenutnog plejmejkera rezervnim plejmejkerom.");	
+        update( u );
+end
+
+rule "Losa igra beka i bolja rezervnog beka"
+lock-on-active true
+    when
+        u : Game(bek.indexForme < -10,rezervniBek.indexForme > -10,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);
+    	u.dodajObjasnjenje("Trenutni bek je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni bek je u boljoj formi, najbolje je promeniti trenutnog beka rezervnim bekom.");		
+        update( u );
+end
+
+rule "Losa igra beka i bolja pleja/beka"
+lock-on-active true
+    when
+        u : Game(bek.indexForme < -10,plejBek.indexForme > -10,plejBek.povredjen==false,plejBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getPlejBek());
+    	u.setPgBek(pomocna);	
+    	u.dodajObjasnjenje("Trenutni bek je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni plejmejker/bek je u boljoj formi, najbolje je promeniti trenutnog beka rezervnim igračem koji može da igra i na poziciji beka.");	
+        update( u );
+end
+
+rule "Losa igra krila i bolja rezervnog krila"
+lock-on-active true
+    when
+        u : Game(krilo.indexForme < -10,rezervnoKrilo.indexForme > -10,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);
+    	u.dodajObjasnjenje("Trenutno krilo je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervno krilo je u boljoj formi, najbolje je promeniti trenutno krilo rezervnim krilom.");			
+        update( u );
+end
+
+rule "Losa igra krilnog centra i bolja rezervnog krilnog centra"
+lock-on-active true
+    when
+        u : Game(krilniCentar.indexForme < -10,rezervniKrilniCentar.indexForme > -10,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getRezervniKrilniCentar());
+    	u.setRezervniKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Trenutni krilni centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni krilni centar je u boljoj formi, najbolje je promeniti trenutni krilni centar rezervnim krilnim centrom.");			
+        update( u );
+end
+
+rule "Losa igra krilnog centra i bolja krilnog centra/centra"
+lock-on-active true
+    when
+        u : Game(krilniCentar.indexForme < -10,centarKrilniCentar.indexForme > -10,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getCentarKrilniCentar());
+    	u.setCKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Trenutni krilni centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni krilni centar/centar je u boljoj formi, najbolje je promeniti trenutnog krilnog centra rezervnim igračem koji može da igra i na poziciji krilnog centra.");
+        update( u );
+end
+
+rule "Losa igra centra i bolja rezervnog centra"
+lock-on-active true
+    when
+        u : Game(centar.indexForme < -10,rezervniCentar.indexForme > -10,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setRezervniCentar(pomocna);	
+    	u.dodajObjasnjenje("Trenutno centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni centar je u boljoj formi, najbolje je promeniti trenutnog centar rezervnim centrom.");			
+        update( u );
+end
+
+rule "Losa igra centra i bolja krilnog centra/centra"
+lock-on-active true
+    when
+        u : Game(centar.indexForme < -10,centarKrilniCentar.indexForme > -10,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getCentarKrilniCentar());
+    	u.setCKrilniCentar(pomocna);
+    	u.dodajObjasnjenje("Trenutni centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni krilni centar/centar je u boljoj formi, najbolje je promeniti trenutnog centra rezervnim igračem koji može da igra i na poziciji centra.");	
+        update( u );
+end
+
+rule "Losa igra i umor pleja"
+lock-on-active true
+    when
+        u : Game(plej.indexForme < -5,plej.indexUmora > 10,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Trenutni plejmejker je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutnog plejmejkera.");
+        update(u);
+end
+
+rule "Losa igra i umor beka"
+lock-on-active true
+    when
+        u : Game(bek.indexForme < -5,bek.indexUmora > 10,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);
+    	u.dodajObjasnjenje("Trenutni bek je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutnog beka.");	
+        update(u);
+end
+
+rule "Losa igra i umor krila"
+lock-on-active true
+    when
+        u : Game(krilo.indexForme < -5,krilo.indexUmora > 10,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);
+    	u.dodajObjasnjenje("Trenutno krilo je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutno krilo.");	
+        update(u);
+end
+rule "Losa igra i umor krilnog centra"
+lock-on-active true
+    when
+        u : Game(krilniCentar.indexForme < -5,krilniCentar.indexUmora > 10,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getRezervniKrilniCentar());
+    	u.setRezervniKrilniCentar(pomocna);
+    	u.dodajObjasnjenje("Trenutni krilni centar je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutnog krilnog centra.");		
+        update(u);
+end
+
+rule "Losa igra i umor centra"
+lock-on-active true
+    when
+        u : Game(centar.indexForme < -5,centar.indexUmora > 10,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setRezervniCentar(pomocna);
+    	u.dodajObjasnjenje("Trenutni centar je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutni centar.");		
+        update(u);
+end
+
+rule "Problem sa licnim greskama pleja i manje greski rezervnog pleja"
+lock-on-active true
+    when
+        u : Game(plej.brLicnihGreski >= 3,rezervniPlej.brLicnihGreski < 3 && minut > 20,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni plejmejker ima 2 ili više ličnih grešaka, a rezervni plejmejker ima manje ličnih grešaka, najbolje je zameniti trenutnog plejmejkera rezervnim, da plejmejker ne bi postao isključen.");
+        update(u);
+end
+
+rule "Problem sa licnim greskama pleja i manje greski pleja/beka"
+lock-on-active true
+    when
+        u : Game(plej.brLicnihGreski >= 3,plejBek.brLicnihGreski < 3 && minut > 20,plejBek.povredjen==false,plejBek.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getPlejBek());
+    	u.setPgBek(pomocna);
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni plejmejker ima 2 ili više ličnih grešaka, a rezervni plej/bek ima manje ličnih grešaka, najbolje je zameniti trenutnog beka rezervnim, da bek ne bi postao isključen.");	
+        update( u );
+end
+
+rule "Problem sa licnim greskama beka i manje greski rezervnog beka"
+lock-on-active true
+    when
+        u : Game(bek.brLicnihGreski >= 3,rezervniBek.brLicnihGreski < 3 && minut > 20,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni bek ima 2 ili više ličnih grešaka, a rezervni bek ima manje ličnih grešaka, najbolje je zameniti trenutnog beka rezervnim, da bek ne bi postao isključen.");	
+        update( u );
+end
+
+rule "Problem sa licnim greskama beka i manje greski pleja/beka"
+lock-on-active true
+    when
+        u : Game(bek.brLicnihGreski >= 3,plejBek.brLicnihGreski < 3 && minut > 20,plejBek.povredjen==false,plejBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getPlejBek());
+    	u.setPgBek(pomocna);
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni bek ima 2 ili više ličnih grešaka, a rezervni plej/bek ima manje ličnih grešaka, najbolje je zameniti trenutnog beka rezervnim, da bek ne bi postao isključen.");	
+        update( u );
+end
+
+rule "Problem sa licnim greskama beka i manje greski rezervnog krila"
+lock-on-active true
+    when
+        u : Game(krilo.brLicnihGreski >= 3,rezervnoKrilo.brLicnihGreski < 3 && minut > 20,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutno krilo ima 2 ili više ličnih grešaka, a rezervno krilo ima manje ličnih grešaka, najbolje je zameniti trenutno krilo rezervnim, da krilo ne bi postalo isključeno.");
+        update( u );
+end
+
+rule "Problem sa licnim greskama krilnog centra i manje greski rezervnog krilnog centra"
+lock-on-active true
+    when
+        u : Game(krilniCentar.brLicnihGreski >= 3,rezervniKrilniCentar.brLicnihGreski < 3 && minut > 20,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getRezervniKrilniCentar());
+    	u.setRezervniKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni krilni centar ima 2 ili više ličnih grešaka, a rezervni krilni centar ima manje ličnih grešaka, najbolje je zameniti trenutnog krilnog centra rezervnim, da krilni centar ne bi postao isključen.");
+        update( u );
+end
+
+rule "Problem sa licnim greskama krilnog centra i manje greski krilnog centra/centra"
+lock-on-active true
+    when
+        u : Game(krilniCentar.brLicnihGreski >= 3,CentarKrilniCentar.brLicnihGreski < 3 && minut > 20,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getCentarKrilniCentar());
+    	u.setCKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni krilni centar ima 2 ili više ličnih grešaka, a rezervni krilni centar/centar ima manje ličnih grešaka, najbolje je zameniti trenutnog krilnog centra rezervnim, da krilni centar ne bi postao isključen.");
+        update( u );
+end
+
+rule "Problem sa licnim greskama centra i manje greski rezervnog centra"
+lock-on-active true
+    when
+        u : Game(centar.brLicnihGreski >= 3,rezervniCentar.brLicnihGreski < 3 && minut > 20,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setRezervniCentar(pomocna);	
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni centar ima 2 ili više ličnih grešaka, a rezervni centar ima manje ličnih grešaka, najbolje je zameniti trenutnog centra rezervnim, da centar ne bi postao isključen.");
+        update( u );
+end
+
+rule "Problem sa licnim greskama centra i manje greski krilnog centra/centra"
+lock-on-active true
+    when
+        u : Game(centar.brLicnihGreski >= 3,CentarKrilniCentar.brLicnihGreski < 3 && minut > 20,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getCentarKrilniCentar());
+    	u.setCKrilniCentar(pomocna);
+    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni centar ima 2 ili više ličnih grešaka, a rezervni krilni centar/centar ima manje ličnih grešaka, najbolje je zameniti trenutnog centra rezervnim, da centar ne bi postao isključen.");	
+        update( u );
+end
+
+rule "Problemi u organizaciji igre protiv nekvalitetne ekipe"
+lock-on-active true
+    when
+        u : Game(kvalitetProtivnickeEkipe =="slaba ekipa",minut>15,rezultat > -5,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Protivnička ekipa je slabog kvaliteta i prošlo je više od 15 minuta, a ekipa gubi sa više od petnaest minuta, što ukazuje na to da postoje problemi u organizaciji igri za šta je zaslužan plejmejker pa je predlog izmeniti ga.");
+        update( u );
+end
+
+rule "Poslednji sekundi pre kraja cetvrtine i u igri visoki centar."
+lock-on-active true
+    when
+        u : Game((minut>=9.7 || minut>=19.7 || minut>=29.7 || minut>=39.7)&&centar.pozicija=="centar"&&centarKrilniCentar.pozicija=="krilni centar/centar",centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getCentarKrilniCentar());
+    	u.setCKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Poslednjih 20 ili manje sekundi četvrtine, a u igri je visoki centar, pa je potrebno da zameniti ga, jer se tad igra bazira na šutu.");
+        update( u );
+end
+
+rule "Poslednji sekundi pre kraja cetvrtine i u igri gori bek suter."
+lock-on-active true
+    when
+        u : Game((minut>=9.7 || minut>=19.7 || minut>=29.7 || minut>=39.7)&&bek.prosecanProcenatSuta3<rezervniBek.prosecanProcenatSuta3,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);	
+    	u.dodajObjasnjenje("Ostalo je 20 ili manje sekundi do kraja četvrtine, a ekipa je trenutno u posedu lopte, predlog je zameniti igrača na poziciji beka sa igračem boljeg šuta za tri.");
+        update( u );
+end
+
+rule "Poslednji sekundi pre kraja cetvrtine i u igri gori plej suter"
+lock-on-active true
+    when
+        u : Game((minut>=9.7 || minut>=19.7 || minut>=29.7 || minut>=39.7)&&plej.prosecanProcenatSuta3<rezervniPlej.prosecanProcenatSuta3,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Ostalo je 20 ili manje sekundi do kraja četvrtine, a ekipa je trenutno u posedu lopte, predlog je zameniti igrača na poziciji plejmejkera sa igračem boljeg šuta za tri.");
+        update( u );
+end
+
+rule "Razlika plus 10 i proslo 25 minuta od igre"
+lock-on-active true
+    when
+        u : Game(minut>25,rezultat>10)
+    then
+    	u.setTaktika("Pozicioni napad sa centrom");	
+        update( u );
+end
+
+rule "Realizacija taktike pozicionog napada sa uigranijim centrom-1"
+lock-on-active true
+    when
+        u : Game(taktika=="Pozicioni napad sa centrom"&&centar.pozicija=="centar/krilni centar"&&centarKrilniCentar.indexForme>rezervniCentar.indexForme,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getCentarKrilniCentar());
+    	u.setCKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Trenutna taktika je pozicioni napad sa centrom, što podrazumeva forsiranje centra u igri, potrebno je zameniti centra sa igračem u boljoj formi na toj poziciji.");
+        update( u );
+end
+
+rule "Realizacija taktike pozicionog napada sa u igranijim centrom-2"
+lock-on-active true
+    when
+        u : Game(taktika=="Pozicioni napad sa centrom"&&centar.pozicija=="centar/krilni centar"&&centarKrilniCentar.indexForme>rezervniCentar.indexForme,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setCKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Trenutna taktika je pozicioni napad sa centrom, što podratumeva forsiranje centra u igri, potrebno je zameniti centra sa igračem u boljoj formi na toj poziciji.");
+        update( u );
+end
+
+rule "Razlika plus -10 i proslo 25 minuta od igre"
+lock-on-active true
+    when
+        u : Game(minut>25,rezultat>-10)
+    then
+    	u.setTaktika("Napadi iz tranzicije sa dobrim plejom");	
+        update( u );
+end
+
+rule "Realizacija taktike napadi iz tranzicije sa Playerem u najboljoj formi na poziciji pleja-1"
+lock-on-active true
+    when
+        u : Game(taktika=="Napadi iz tranzicije sa dobrim plejom"&&plej.indexForme<rezervniPlej.indexForme&&rezervniPlej.indexForme>plejBek.indexForme,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Trenutna taktika je napad iz tranzicije sa dobrim plejmejkerom pa je potrebno uvesti u igri plejmejkera u najboljoj formi na utakmici.");
+        update( u );
+end
+
+rule "Realizacija taktike napadi iz tranzicije sa Playerem u najboljoj formi na poziciji pleja-2"
+lock-on-active true
+    when
+        u : Game(taktika=="Napadi iz tranzicije sa dobrim plejom"&&plej.indexForme<plejBek.indexForme&&rezervniPlej.indexForme<plejBek.indexForme,plejBek.povredjen==false,plejBek.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getPlejBek());
+    	u.setPgBek(pomocna);
+    	  	u.dodajObjasnjenje("Trenutna taktika je napad iz tranzicije sa dobrim plejmejkerom pa je potrebno uvesti u igri plejmejkera u najboljoj formi na utakmici.");	
+        update( u );
+end
+
+rule "Poslednji napad i ekipa nije u bonusu-prva cetvrtina"
+lock-on-active true
+    when
+        u : Game(minut>8&&licneGreskeDoBonusa>2)
+    then
+    	u.setTaktika("Agresivna igra na granici faula");
+        update( u );
+end
+
+rule "Poslednji napad i ekipa nije u bonusu-druga cetvrtina"
+lock-on-active true
+    when
+        u : Game(minut>18&&licneGreskeDoBonusa>2)
+    then
+    	u.setTaktika("Agresivna igra na granici faula");
+        update( u );
+end
+
+rule "Poslednji napad i ekipa nije u bonusu-treca cetvrtina"
+lock-on-active true
+    when
+        u : Game(minut>28&&licneGreskeDoBonusa>2)
+    then
+    	u.setTaktika("Agresivna igra na granici faula");
+        update( u );
+end
+
+rule "Poslednji napad i ekipa nije u bonusu-cetvrta cetvrtina"
+lock-on-active true
+    when
+        u : Game(minut>38&&licneGreskeDoBonusa>2)
+    then
+    	u.setTaktika("Agresivna igra na granici faula");
+        update( u );
+end
+rule "Realizacija agresivne taktike-1"
+lock-on-active true
+    when
+        u : Game(taktika=="Agresivna taktika na granici faula"&& minut>20 && krilo.brLicnihGreski>rezervnoKrilo.brLicnihGreski,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);	
+    	u.dodajObjasnjenje("Trenutna taktika je agresivna igra na ivic faula, proščo je više od 20 minuta, pa je potrebno uvesti krilo sa manje ličnih grešaka, sprečavajući rizik od problema sa ličnim greškama.");
+        update( u );
+end
+
+rule "Realizacija agresivne taktike-2"
+lock-on-active true
+    when
+        u : Game(taktika=="Agresivna taktika na granici faula" && minut>20 && bek.brLicnihGreski>rezervniBek.brLicnihGreski && rezervniBek.brLicnihGreski < plejBek.brLicnihGreski,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);	
+    	u.dodajObjasnjenje("Trenutna taktika je agresivna igra na ivic faula, proščo je više od 20 minuta, pa je potrebno uvesti beka sa manje ličnih grešaka, sprečavajući rizik od problema sa ličnim greškama.");
+        update( u );
+end
+
+rule "Realizacija agresivne taktike-3"
+lock-on-active true
+    when
+        u : Game(taktika=="Agresivna taktika na granici faula" && minut>20 && bek.brLicnihGreski>plejBek.brLicnihGreski && rezervniBek.brLicnihGreski > plejBek.brLicnihGreski,plejBek.povredjen==false,plejBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getPlejBek());
+    	u.setPgBek(pomocna);	
+    	u.dodajObjasnjenje("Trenutna taktika je agresivna igra na ivic faula, proščo je više od 20 minuta, pa je potrebno uvesti krilo sa manje ličnih grešaka, sprečavajući rizik od problema sa ličnim greškama.");
+        update( u );
+end
+
+rule "Ako je domacin onda je vazna Game"
+lock-on-active true
+    when
+        u : Game(domacin==true)
+    then
+    	u.setVaznostUtakmice(true);	
+        update( u );
+end
+
+rule "Ako je vazna Game onda postaviti agresivnu taktiku"
+lock-on-active true
+    when
+        u : Game(vaznostUtakmice==true)
+    then
+    	u.setTaktika("Agresivna taktika na granici faula");
+        update( u );
+end
+
+rule "Izmena povredjenog pleja"
+lock-on-active true
+    when
+        u : Game(plej.povredjen==true,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji plejmejkera.");
+        update( u );
+end
+
+rule "Izmena povredjenog beka"
+lock-on-active true
+    when
+        u : Game(bek.povredjen==true,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);	
+    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji beka.");
+        update( u );
+end
+
+rule "Izmena povredjenog krila"
+lock-on-active true
+    when
+        u : Game(krilo.povredjen==true,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);
+    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji beka.");	
+        update( u );
+end
+
+rule "Izmena povredjenog krilnog centra"
+lock-on-active true
+    when
+        u : Game(krilniCentar.povredjen==true,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getRezervniKrilniCentar());
+    	u.setRezervniKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji krilnog centra.");
+        update( u );
+end
+
+rule "Izmena povredjenog centra"
+lock-on-active true
+    when
+        u : Game(centar.povredjen==true,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setRezervniCentar(pomocna);	
+        update( u );
+end
+
+rule "Iskljucen za pet licnih gresaka-centar"
+lock-on-active true
+    when
+        u : Game(centar.BrLicnihGreski==5)
+    then
+    	u.getCentar().setIskljucen(true);
+        update( u );
+end
+
+rule "Iskljucen za pet licnih gresaka-krilni centar"
+lock-on-active true
+    when
+        u : Game(krilniCentar.BrLicnihGreski==5)
+    then
+    	u.getKrilniCentar().setIskljucen(true);
+        update( u );
+end
+
+rule "Iskljucen za pet licnih gresaka-krilo"
+lock-on-active true
+    when
+        u : Game(krilo.BrLicnihGreski==5)
+    then
+    	u.getKrilo().setIskljucen(true);
+        update( u );
+end
+
+rule "Iskljucen za pet licnih gresaka-bek"
+lock-on-active true
+    when
+        u : Game(bek.BrLicnihGreski==5)
+    then
+    	u.getBek().setIskljucen(true);
+        update( u );
+end
+
+rule "Iskljucen za pet licnih gresaka-plej"
+lock-on-active true
+    when
+        u : Game(plej.BrLicnihGreski==5)
+    then
+    	u.getPlej().setIskljucen(true);
+        update( u );
+end
+
+rule "Izmena iskljucenog Playera-plej"
+lock-on-active true
+    when
+        u : Game(plej.iskljucen==true,rezervniPlej.iskljucen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Isključen plejmejker mora biti izmenjen.");
+        update( u );
+end
+
+rule "Izmena iskljucenog Playera-bek"
+lock-on-active true
+    when
+        u : Game(bek.iskljucen==true,rezervniBek.iskljucen==false)
+    then
+    	Player pomocna = u.getBek();
+    	u.setSg(u.getRezervniBek());
+    	u.setRezervniBek(pomocna);	
+    	u.dodajObjasnjenje("Isključen bek mora biti izmenjen.");
+        update( u );
+end
+
+
+rule "Izmena iskljucenog Playera-krilo"
+lock-on-active true
+    when
+        u : Game(krilo.iskljucen==true,rezervnoKrilo.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilo();
+    	u.setSf(u.getRezervnoKrilo());
+    	u.setRezervnoKrilo(pomocna);	
+    	u.dodajObjasnjenje("Isključeno krilo mora biti izmenjen.");
+        update( u );
+end
+
+
+rule "Izmena iskljucenog Playera-krilni centar"
+lock-on-active true
+    when
+        u : Game(krilniCentar.iskljucen==true,rezervniKrilniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getKrilniCentar();
+    	u.setPf(u.getRezervniKrilniCentar());
+    	u.setRezervniKrilniCentar(pomocna);	
+    	u.dodajObjasnjenje("Isključen krilni centar mora biti izmenjen.");
+        update( u );
+end
+
+rule "Izmena iskljucenog Playera-centar"
+lock-on-active true
+    when
+        u : Game(centar.iskljucen==true,rezervniCentar.iskljucen==false)
+    then
+    	Player pomocna = u.getCentar();
+    	u.setC(u.getRezervniCentar());
+    	u.setRezervniCentar(pomocna);	
+    	u.dodajObjasnjenje("Isključen centar mora biti izmenjen.");
+        update( u );
+end
+
+rule "Finis utakmice i mala razlika-1"
+lock-on-active true
+    when
+        u : Game(minut>39.5,plej.prosecanProcenatSuta1<rezervniPlej.prosecanProcenatSuta1,rezervniPlej.prosecanProcenatSuta1>plejBek.prosecanProcenatSuta1,rezervniPlej.iskljucen==false,rezervniPlej.povredjen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getRezervniPlej());
+    	u.setRezervniPlej(pomocna);	
+    	u.dodajObjasnjenje("Ostalo je 30 ili manje sekundi do kraja utakmice, pa je potrebno uvesti u igru plejmejkera sa najboljim šutem za 1, jer se očekuje penal završnica.");
+        update( u );
+end
+
+rule "Finis utakmice i mala razlika-2"
+lock-on-active true
+    when
+        u : Game(minut>39.5,plej.prosecanProcenatSuta1<plejBek.prosecanProcenatSuta1,rezervniPlej.prosecanProcenatSuta1<plejBek.prosecanProcenatSuta1,plejBek.iskljucen==false,plejBek.povredjen==false)
+    then
+    	Player pomocna = u.getPlej();
+    	u.setPg(u.getPlejBek());
+    	u.setPgBek(pomocna);	
+    	u.dodajObjasnjenje("Ostalo je 30 ili manje sekundi do kraja utakmice, pa je potrebno uvesti u igru plejmejkera sa najboljim šutem za 1, jer se očekuje penal završnica.");
+        update( u );
+end
+
