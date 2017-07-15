@@ -1,734 +1,735 @@
 
 package org.silab.rules
  
-import org.silab.expertsystem.Player
-import org.silab.expertsystem.Game
+import org.silab.expertsystem.model.Player
+import org.silab.expertsystem.model.Game
 
-rule "Bad start of PG"
+rule "Bad start of a PG"
 lock-on-active true
     when
-        u : Game(minut < 2,rezultat<-7,plej.indexForme < 1,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(minute < 2,score<-7,pg.pir < 1,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme plejmejkera je manji od jedinice, pa je stoga najbolje promeniti trenutnog pleja rezervnim plejmejkom.");
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getPg());
+    	g.setPg(helpVariable);	
+    	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of PG is less than 1, so the best solution is to substite current PG with the backup PG.");
+        update( g );
 end
 
-rule "Los pocetak beka"
+rule "Bad start of a SG"
 lock-on-active true
     when
-        u : Game(minut < 2,rezultat<-7,bek.indexForme < 1,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game(minute < 2,score<-7,sg.pir < 1,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);
-    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme beka je manji od jedinice, pa je stoga najbolje promeniti trenutnog beka rezervnim bekom.");	
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of SG is less than 1, so the best solution is to substite current SG with the backup SG.");	
+        update( g );
 end
 
-rule "Los pocetak krilo"
+rule "Bad start of a SF"
 lock-on-active true
     when
-        u : Game(minut < 2,rezultat<-7,krilo.indexForme < 1,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+        g : Game(minute < 2,score<-7,sf.pir < 1,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);
-    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme krila je manji od jedinice, pa je stoga najbolje promeniti trenutno krilo rezervnim krilo.");		
-        update( u );
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of SF is less than 1, so the best solution is to substite current SF with the backup SF.");		
+        update( g );
 end
 
-rule "Los pocetak krilni centar"
+rule "Bad start of a PF"
 lock-on-active true
     when
-        u : Game(minut < 2,rezultat<-7,krilniCentar.indexForme < 1,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+        g : Game(minute < 2,score<-7,pf.pir < 1,subsPf.hurt==false,subsPf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getRezervniKrilniCentar());
-    	u.setRezervniKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme krilnog centra je manji od jedinice, pa je stoga najbolje promeniti trenutnog krilnog centra rezervnim krilnim centrom.");	
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getSubsPf());
+    	g.setSubsPf(helpVariable);	
+    	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of PF is less than 1, so the best solution is to substite current PF with the backup PF.");	
+        update( g );
 end
 
-rule "Los pocetak centar"
+rule "Bad start of a C"
 lock-on-active true
     when
-        u : Game(minut < 2,rezultat<-7,centar.indexForme < 1,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+        g : Game(minute < 2,score<-7,c.pir < 1,subsC.hurt==false,subsC.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setRezervniCentar(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je manje od dva minuta, ekipa gubi sa vise od sedam razlike i indeks forme centra je manji od jedinice, pa je stoga najbolje promeniti trenutnog centra rezervnim centrom.");	
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setSubsC(helpVariable);	
+    	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of C is less than 1, so the best solution is to substite current C with the backup C.");	
+        update( g );
 end
 
-rule "Losa igra pleja i bolja pleja/beka"
+rule "Bad play of a PG and better play of a PG/SG"
 lock-on-active true
     when
-        u : Game(plej.indexForme < -10,plejBek.indexForme > -10,plejBek.povredjen==false,plejBek.iskljucen==false)
+        g : Game(pg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getPlejBek());
-    	u.setPgBek(pomocna);	
-    	u.dodajObjasnjenje("Trenutni plejmejker je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni plejmejker/bek je u boljoj formi, najbolje je promeniti trenutnoj plejmejkera rezervnim igračem koji može da igra i na poziciji plejmejkera.");	
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getPgSg());
+    	g.setPgSg(helpVariable);	
+    	g.addExplanation("Current PG is in a bad form in the game (pir less than -10), and player on a PG/SG position is in a better form (pir greated than -10), so the best solution is to substitute current PG with the PG/SG");	
+        update( g );
 end
 
-rule "Losa igra pleja i bolja rezervnog pleja"
+rule "Bad play of a PG and better play of a backup PG"
 lock-on-active true
     when
-        u : Game(plej.indexForme < -10,rezervniPlej.indexForme > -10,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(pg.pir < -10,subsPg.pir > -10,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Trenutni plejmejker je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni plejmejker je u boljoj formi, najbolje je promeniti trenutnog plejmejkera rezervnim plejmejkerom.");	
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("Current PG is in a bad form in the game (pir less than -10), and player that is a substitue for PG position is in a better form (pir greated than -10), so the best solution is to substitute current PG with the backup PG ");	
+        update( g );
 end
 
-rule "Losa igra beka i bolja rezervnog beka"
+rule "Bad play of a SG and better play of a backup SG"
 lock-on-active true
     when
-        u : Game(bek.indexForme < -10,rezervniBek.indexForme > -10,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game(sg.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);
-    	u.dodajObjasnjenje("Trenutni bek je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni bek je u boljoj formi, najbolje je promeniti trenutnog beka rezervnim bekom.");		
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("Current SG is in a bad form in the game (pir less than -10), and player that is a substitue for SG position is in a better form (pir greated than -10), so the best solution is to substitute current SG with the backup SG ");		
+        update( g );
 end
 
-rule "Losa igra beka i bolja pleja/beka"
+rule "Bad play of a SG and better play of a PG/SG"
 lock-on-active true
     when
-        u : Game(bek.indexForme < -10,plejBek.indexForme > -10,plejBek.povredjen==false,plejBek.iskljucen==false)
+        g : Game(sg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getPlejBek());
-    	u.setPgBek(pomocna);	
-    	u.dodajObjasnjenje("Trenutni bek je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni plejmejker/bek je u boljoj formi, najbolje je promeniti trenutnog beka rezervnim igračem koji može da igra i na poziciji beka.");	
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getPgSg());
+    	g.setPgSg(helpVariable);	
+    	g.addExplanation("Current SG is in a bad form in the game (pir less than -10), and player on a PG/SG position is in a better form (pir greated than -10), so the best solution is to substitute current SG with the PG/SG");	
+        update( g );
 end
 
-rule "Losa igra krila i bolja rezervnog krila"
+rule "Bad play of a SF and better play of a backup SF"
 lock-on-active true
     when
-        u : Game(krilo.indexForme < -10,rezervnoKrilo.indexForme > -10,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+        g : Game(sf.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);
-    	u.dodajObjasnjenje("Trenutno krilo je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervno krilo je u boljoj formi, najbolje je promeniti trenutno krilo rezervnim krilom.");			
-        update( u );
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("Current SF is in a bad form in the game (pir less than -10), and player that is a substitue for SG position is in a better form (pir greated than -10), so the best solution is to substitute current SF with the backup SF");			
+        update( g );
 end
 
-rule "Losa igra krilnog centra i bolja rezervnog krilnog centra"
+rule "Bad play of a PF and better play of a backup PF"
 lock-on-active true
     when
-        u : Game(krilniCentar.indexForme < -10,rezervniKrilniCentar.indexForme > -10,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+        g : Game(pf.pir < -10,subsPf.pir > -10,subsPf.hurt==false,subsPf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getRezervniKrilniCentar());
-    	u.setRezervniKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Trenutni krilni centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni krilni centar je u boljoj formi, najbolje je promeniti trenutni krilni centar rezervnim krilnim centrom.");			
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getSubsPf());
+    	g.setSubsPf(helpVariable);	
+    	g.addExplanation("Current PF is in a bad form in the game (pir less than -10), and player that is a substitue for PF position is in a better form (pir greated than -10), so the best solution is to substitute current PF with the backup PF.");			
+        update( g );
 end
 
-rule "Losa igra krilnog centra i bolja krilnog centra/centra"
+rule "Bad play of a PF and better play of a PF/C"
 lock-on-active true
     when
-        u : Game(krilniCentar.indexForme < -10,centarKrilniCentar.indexForme > -10,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+        g : Game(pf.pir < -10,cPf.pir > -10,cPf.hurt==false,cPf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getCentarKrilniCentar());
-    	u.setCKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Trenutni krilni centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni krilni centar/centar je u boljoj formi, najbolje je promeniti trenutnog krilnog centra rezervnim igračem koji može da igra i na poziciji krilnog centra.");
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getcPf());
+    	g.setcPf(helpVariable);	
+    	g.addExplanation("Current PF is in a bad form in the game (pir less than -10), and player that is a substitue for PF position is in a better form (pir greated than -10), so the best solution is to substitute current PF with the backup PF.");
+        update( g );
 end
 
-rule "Losa igra centra i bolja rezervnog centra"
+rule "Bad play of a C and better play of a backup C"
 lock-on-active true
     when
-        u : Game(centar.indexForme < -10,rezervniCentar.indexForme > -10,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+        g : Game(c.pir < -10,subsC.pir > -10,subsC.hurt==false,subsC.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setRezervniCentar(pomocna);	
-    	u.dodajObjasnjenje("Trenutno centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni centar je u boljoj formi, najbolje je promeniti trenutnog centar rezervnim centrom.");			
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setSubsC(helpVariable);	
+    	g.addExplanation("Current C is in a bad form in the game (pir less than -10), and player that is a substitue for C position is in a better form (pir greated than -10), so the best solution is to substitute current C with the backup C.");			
+        update( g );
 end
 
-rule "Losa igra centra i bolja krilnog centra/centra"
+rule "Bad play of a C and better play of a PF/C"
 lock-on-active true
     when
-        u : Game(centar.indexForme < -10,centarKrilniCentar.indexForme > -10,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+        g : Game(c.pir < -10,cPf.pir > -10,cPf.hurt==false,cPf.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getCentarKrilniCentar());
-    	u.setCKrilniCentar(pomocna);
-    	u.dodajObjasnjenje("Trenutni centar je u dosta lošoj formi na trenutnoj utakmici (indeks forme manji od -10), a rezervni krilni centar/centar je u boljoj formi, najbolje je promeniti trenutnog centra rezervnim igračem koji može da igra i na poziciji centra.");	
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getcPf());
+    	g.setcPf(helpVariable);
+    	g.addExplanation("Current C is in a bad form in the game (pir less than -10), and player that is on a PF/C position is in a better form (pir greated than -10), so the best solution is to substitute current C with the PF/C.");	
+        update( g );
 end
 
-rule "Losa igra i umor pleja"
+rule "Bad play and tiredness of a PG"
 lock-on-active true
     when
-        u : Game(plej.indexForme < -5,plej.indexUmora > 10,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(pg.pir < -5,pg.indexOfTiredness > 10,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Trenutni plejmejker je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutnog plejmejkera.");
-        update(u);
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("Current PG is in a bad form in the game (pir less than -10) and he is tired (index of tiredness greater than 10), so the best solution is to substite current PG with the backup PG.");
+        update(g);
 end
 
-rule "Losa igra i umor beka"
+rule "Bad play and tiredness of a SG"
 lock-on-active true
     when
-        u : Game(bek.indexForme < -5,bek.indexUmora > 10,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game(sg.pir < -5,sg.indexOfTiredness > 10,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);
-    	u.dodajObjasnjenje("Trenutni bek je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutnog beka.");	
-        update(u);
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("Current SG is in a bad form in the game (pir less than -10) and he is tired (index of tiredness greater than 10), so the best solution is to substite current SG with the backup SG.");	
+        update(g);
 end
 
-rule "Losa igra i umor krila"
+rule "Bad play and tiredness of a SF"
 lock-on-active true
     when
-        u : Game(krilo.indexForme < -5,krilo.indexUmora > 10,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+        g : Game(sf.pir < -5,sf.indexOfTiredness > 10,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);
-    	u.dodajObjasnjenje("Trenutno krilo je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutno krilo.");	
-        update(u);
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("Current SF is in a bad form in the game (pir less than -10) and he is tired (index of tiredness greater than 10), so the best solution is to substite current SF with the backup SF.");	
+        update(g);
 end
-rule "Losa igra i umor krilnog centra"
+rule "Bad play and tiredness of a PF"
 lock-on-active true
     when
-        u : Game(krilniCentar.indexForme < -5,krilniCentar.indexUmora > 10,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+        g : Game(pf.pir < -5,pf.indexOfTiredness > 10,subsPf.hurt==false,subsPf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getRezervniKrilniCentar());
-    	u.setRezervniKrilniCentar(pomocna);
-    	u.dodajObjasnjenje("Trenutni krilni centar je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutnog krilnog centra.");		
-        update(u);
-end
-
-rule "Losa igra i umor centra"
-lock-on-active true
-    when
-        u : Game(centar.indexForme < -5,centar.indexUmora > 10,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
-    then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setRezervniCentar(pomocna);
-    	u.dodajObjasnjenje("Trenutni centar je u lošoj formi (indeks forme je manji od -5), a u isto vreme i umoran (indeks umora je veći od 10), najbolje je zameniti trenutni centar.");		
-        update(u);
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getSubsPf());
+    	g.setSubsPf(helpVariable);
+    	g.addExplanation("Current PF is in a bad form in the game (pir less than -10) and he is tired (index of tiredness greater than 10), so the best solution is to substite current PF with the backup PF.");		
+        update(g);
 end
 
-rule "Problem sa licnim greskama pleja i manje greski rezervnog pleja"
+rule "Bad play and tiredness of a C"
 lock-on-active true
     when
-        u : Game(plej.brLicnihGreski >= 3,rezervniPlej.brLicnihGreski < 3 && minut > 20,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(c.pir < -5,c.indexOfTiredness > 10,subsC.hurt==false,subsC.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni plejmejker ima 2 ili više ličnih grešaka, a rezervni plejmejker ima manje ličnih grešaka, najbolje je zameniti trenutnog plejmejkera rezervnim, da plejmejker ne bi postao isključen.");
-        update(u);
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setSubsC(helpVariable);
+    	g.addExplanation("Current C is in a bad form in the game (pir less than -10) and he is tired (index of tiredness greater than 10), so the best solution is to substite current C with the backup C.");
+        update(g);
 end
 
-rule "Problem sa licnim greskama pleja i manje greski pleja/beka"
+rule "Issue with personal fouls of a PG and less number of personal fouls of a backup PG"
 lock-on-active true
     when
-        u : Game(plej.brLicnihGreski >= 3,plejBek.brLicnihGreski < 3 && minut > 20,plejBek.povredjen==false,plejBek.iskljucen==false)
+        g : Game(pg.personalFouls >= 3,subsPg.personalFouls < 3 && minute > 20,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getPlejBek());
-    	u.setPgBek(pomocna);
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni plejmejker ima 2 ili više ličnih grešaka, a rezervni plej/bek ima manje ličnih grešaka, najbolje je zameniti trenutnog beka rezervnim, da bek ne bi postao isključen.");	
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("20 minutes of game have been passed, current PG has more than 3 personal fouls, and backup PG has less personal fouls, so the best solution is to substitute PG with the backup PG.");
+        update(g);
 end
 
-rule "Problem sa licnim greskama beka i manje greski rezervnog beka"
+rule "Issue with personal fouls of a PG and less number of personal fouls of a PG/SG"
 lock-on-active true
     when
-        u : Game(bek.brLicnihGreski >= 3,rezervniBek.brLicnihGreski < 3 && minut > 20,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game(pg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni bek ima 2 ili više ličnih grešaka, a rezervni bek ima manje ličnih grešaka, najbolje je zameniti trenutnog beka rezervnim, da bek ne bi postao isključen.");	
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getPgSg());
+    	g.setPgSg(helpVariable);
+    	g.addExplanation("20 minutes of game have been passed, current PG has more than 3 personal fouls, and PG/SG has less personal fouls, so the best solution is to substitute PG with the PG/SG.");	
+        update( g );
 end
 
-rule "Problem sa licnim greskama beka i manje greski pleja/beka"
+rule "Issue with personal fouls of a SG and less number of personal fouls of a backup SG"
 lock-on-active true
     when
-        u : Game(bek.brLicnihGreski >= 3,plejBek.brLicnihGreski < 3 && minut > 20,plejBek.povredjen==false,plejBek.iskljucen==false)
+        g : Game(sg.personalFouls >= 3,subsSg.personalFouls < 3 && minute > 20,subsSg.hurt==false,subsSg.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getPlejBek());
-    	u.setPgBek(pomocna);
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni bek ima 2 ili više ličnih grešaka, a rezervni plej/bek ima manje ličnih grešaka, najbolje je zameniti trenutnog beka rezervnim, da bek ne bi postao isključen.");	
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSg());
+    	g.setSubsSg(helpVariable);
+    	g.addExplanation("20 minutes of game have been passed, current SG has more than 3 personal fouls, and backup SG has less personal fouls, so the best solution is to substitute SG with the backup SG.");	
+        update( g );
 end
 
-rule "Problem sa licnim greskama beka i manje greski rezervnog krila"
+rule "Issue with personal fouls of a SG and less number of personal fouls of a PG/SG"
 lock-on-active true
     when
-        u : Game(krilo.brLicnihGreski >= 3,rezervnoKrilo.brLicnihGreski < 3 && minut > 20,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+        g : Game(sg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false)
     then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutno krilo ima 2 ili više ličnih grešaka, a rezervno krilo ima manje ličnih grešaka, najbolje je zameniti trenutno krilo rezervnim, da krilo ne bi postalo isključeno.");
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getPgSg());
+    	g.setPgSg(helpVariable);
+    	g.addExplanation("20 minutes of game have been passed, current PG has more than 3 personal fouls, and PG/SG has less personal fouls, so the best solution is to substitute SG with the PG/SG.");	
+        update( g );
 end
 
-rule "Problem sa licnim greskama krilnog centra i manje greski rezervnog krilnog centra"
+rule "Issue with personal fouls of a SF and less number of personal fouls of a backup SF"
 lock-on-active true
     when
-        u : Game(krilniCentar.brLicnihGreski >= 3,rezervniKrilniCentar.brLicnihGreski < 3 && minut > 20,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+        g : Game(sf.personalFouls >= 3,subsSf.personalFouls < 3 && minute > 20,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getRezervniKrilniCentar());
-    	u.setRezervniKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni krilni centar ima 2 ili više ličnih grešaka, a rezervni krilni centar ima manje ličnih grešaka, najbolje je zameniti trenutnog krilnog centra rezervnim, da krilni centar ne bi postao isključen.");
-        update( u );
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("20 minutes of game have been passed, current SF has more than 3 personal fouls, and SF has less personal fouls, so the best solution is to substitute SF with the backup SF.");
+        update( g );
 end
 
-rule "Problem sa licnim greskama krilnog centra i manje greski krilnog centra/centra"
+rule "Issue with personal fouls of a PF and less number of personal fouls of a backup PF"
 lock-on-active true
     when
-        u : Game(krilniCentar.brLicnihGreski >= 3,CentarKrilniCentar.brLicnihGreski < 3 && minut > 20,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+        g : Game(pf.personalFouls >= 3,subsPf.personalFouls < 3 && minute > 20,subsPf.hurt==false,subsPf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getCentarKrilniCentar());
-    	u.setCKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni krilni centar ima 2 ili više ličnih grešaka, a rezervni krilni centar/centar ima manje ličnih grešaka, najbolje je zameniti trenutnog krilnog centra rezervnim, da krilni centar ne bi postao isključen.");
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getSubsPf());
+    	g.setSubsPf(helpVariable);	
+    	g.addExplanation("20 minutes of game have been passed, current PF has more than 3 personal fouls, and backup PF has less personal fouls, so the best solution is to substitute PF with the backup PF.");
+        update( g );
 end
 
-rule "Problem sa licnim greskama centra i manje greski rezervnog centra"
+rule "Issue with personal fouls of a PF and less number of personal fouls of a PF/C"
 lock-on-active true
     when
-        u : Game(centar.brLicnihGreski >= 3,rezervniCentar.brLicnihGreski < 3 && minut > 20,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+        g : Game(pf.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setRezervniCentar(pomocna);	
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni centar ima 2 ili više ličnih grešaka, a rezervni centar ima manje ličnih grešaka, najbolje je zameniti trenutnog centra rezervnim, da centar ne bi postao isključen.");
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getcPf());
+    	g.setcPf(helpVariable);	
+    	g.addExplanation("20 minutes of game have been passed, current PF has more than 3 personal fouls, and PF/C has less personal fouls, so the best solution is to substitute PF with the PF/C.");
+        update( g );
 end
 
-rule "Problem sa licnim greskama centra i manje greski krilnog centra/centra"
+rule "Issue with personal fouls of a C and less number of personal fouls of a backup C"
 lock-on-active true
     when
-        u : Game(centar.brLicnihGreski >= 3,CentarKrilniCentar.brLicnihGreski < 3 && minut > 20,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+        g : Game(c.personalFouls >= 3,subsC.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getCentarKrilniCentar());
-    	u.setCKrilniCentar(pomocna);
-    	u.dodajObjasnjenje("Prošlo je više od 20 minuta i trenutni centar ima 2 ili više ličnih grešaka, a rezervni krilni centar/centar ima manje ličnih grešaka, najbolje je zameniti trenutnog centra rezervnim, da centar ne bi postao isključen.");	
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setSubsC(helpVariable);	
+    	g.addExplanation("20 minutes of game have been passed, current C has more than 3 personal fouls, and backup C has less personal fouls, so the best solution is to substitute C with the backup C.");
+        update( g );
 end
 
-rule "Problemi u organizaciji igre protiv nekvalitetne ekipe"
+rule "Issue with personal fouls of a C and less number of personal fouls of a PF/C"
 lock-on-active true
     when
-        u : Game(kvalitetProtivnickeEkipe =="slaba ekipa",minut>15,rezultat > -5,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(c.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,cPf.hurt==false,cPf.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Protivnička ekipa je slabog kvaliteta i prošlo je više od 15 minuta, a ekipa gubi sa više od petnaest minuta, što ukazuje na to da postoje problemi u organizaciji igri za šta je zaslužan plejmejker pa je predlog izmeniti ga.");
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getcPf());
+    	g.setcPf(helpVariable);
+    	g.addExplanation("20 minutes of game have been passed, current C has more than 3 personal fouls, and PF/C has less personal fouls, so the best solution is to substitute C with the PF/C.");	
+        update( g );
 end
 
-rule "Poslednji sekundi pre kraja cetvrtine i u igri visoki centar."
+rule "Problems with game organization against low quality team"
 lock-on-active true
     when
-        u : Game((minut>=9.7 || minut>=19.7 || minut>=29.7 || minut>=39.7)&&centar.pozicija=="centar"&&centarKrilniCentar.pozicija=="krilni centar/centar",centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+        g : Game(qualityOfOpponent =="slaba ekipa",minute>15,score > -5,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getCentarKrilniCentar());
-    	u.setCKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Poslednjih 20 ili manje sekundi četvrtine, a u igri je visoki centar, pa je potrebno da zameniti ga, jer se tad igra bazira na šutu.");
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("Opponent team is low quality and more than 15 minutes have been passes, which indicates that there are some problems in game organization so the solution is to substitute PG with the backup PG.");
+        update( g );
 end
 
-rule "Poslednji sekundi pre kraja cetvrtine i u igri gori bek suter."
+rule "Last seconds before the end of a quarter and in the game is tall C."
 lock-on-active true
     when
-        u : Game((minut>=9.7 || minut>=19.7 || minut>=29.7 || minut>=39.7)&&bek.prosecanProcenatSuta3<rezervniBek.prosecanProcenatSuta3,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&c.position=="C"&&cPf.position=="PC/C",cPf.hurt==false,cPf.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);	
-    	u.dodajObjasnjenje("Ostalo je 20 ili manje sekundi do kraja četvrtine, a ekipa je trenutno u posedu lopte, predlog je zameniti igrača na poziciji beka sa igračem boljeg šuta za tri.");
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getcPf());
+    	g.setcPf(helpVariable);	
+    	g.addExplanation("Last 20 seconds of a quarter, and in the game is tall C, so the solution is to substitute C with the backup PF, because the play is based on long distance shot.");
+        update( g );
 end
 
-rule "Poslednji sekundi pre kraja cetvrtine i u igri gori plej suter"
+rule "Last seconds before the end of a quarter and in the game is worse SG"
 lock-on-active true
     when
-        u : Game((minut>=9.7 || minut>=19.7 || minut>=29.7 || minut>=39.7)&&plej.prosecanProcenatSuta3<rezervniPlej.prosecanProcenatSuta3,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&sg.averagePercentageThreePoints<subsSf.averagePercentageThreePoints,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Ostalo je 20 ili manje sekundi do kraja četvrtine, a ekipa je trenutno u posedu lopte, predlog je zameniti igrača na poziciji plejmejkera sa igračem boljeg šuta za tri.");
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSf());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("Last 20 seconds of a quarter, and in the game is worse SG, so the solution is to substitute SG with the backup SG, because the play is based on long distance shot.");
+        update( g );
 end
 
-rule "Razlika plus 10 i proslo 25 minuta od igre"
+rule "Last seconds before the end of a quarter and in the game is worse shooting PG"
 lock-on-active true
     when
-        u : Game(minut>25,rezultat>10)
+        g : Game((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&pg.averagePercentageThreePoints<subsPg.averagePercentageThreePoints,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	u.setTaktika("Pozicioni napad sa centrom");	
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("Last 20 seconds of a quarter, and in the game is worse shooting PG, so the solution is to substitute PG with the backup PG, because the play is based on long distance shot.");
+        update( g );
 end
 
-rule "Realizacija taktike pozicionog napada sa uigranijim centrom-1"
+rule "The score is +10 and 25 minutes has been passed"
 lock-on-active true
     when
-        u : Game(taktika=="Pozicioni napad sa centrom"&&centar.pozicija=="centar/krilni centar"&&centarKrilniCentar.indexForme>rezervniCentar.indexForme,centarKrilniCentar.povredjen==false,centarKrilniCentar.iskljucen==false)
+        g : Game(minute>25,score>10)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getCentarKrilniCentar());
-    	u.setCKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Trenutna taktika je pozicioni napad sa centrom, što podrazumeva forsiranje centra u igri, potrebno je zameniti centra sa igračem u boljoj formi na toj poziciji.");
-        update( u );
+    	g.setTactic("Positional attack with C");	
+        update( g );
 end
 
-rule "Realizacija taktike pozicionog napada sa u igranijim centrom-2"
+rule "Realisation of a positional attack with better playing C-1"
 lock-on-active true
     when
-        u : Game(taktika=="Pozicioni napad sa centrom"&&centar.pozicija=="centar/krilni centar"&&centarKrilniCentar.indexForme>rezervniCentar.indexForme,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+        g : Game(tactic=="Positional attack with C"&&c.position=="PF/C"&&cPf.pir>subsC.pir,cPf.hurt==false,cPf.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setCKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Trenutna taktika je pozicioni napad sa centrom, što podratumeva forsiranje centra u igri, potrebno je zameniti centra sa igračem u boljoj formi na toj poziciji.");
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getcPf());
+    	g.setcPf(helpVariable);	
+    	g.addExplanation("Current tactic is positional attack with C, which means the emphazisis of a C, so the solution is to substitue current C with the PF/C");
+        update( g );
 end
 
-rule "Razlika plus -10 i proslo 25 minuta od igre"
+rule "Realisation of a positional attack with better playing C-2"
 lock-on-active true
     when
-        u : Game(minut>25,rezultat>-10)
+        g : Game(tactic=="Positional attack with C"&&c.position=="PF/C"&&cPf.pir<subsC.pir,subsC.hurt==false,subsC.sentOff==false)
     then
-    	u.setTaktika("Napadi iz tranzicije sa dobrim plejom");	
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setcPf(helpVariable);	
+    	g.addExplanation("Current tactic is positional attack with C, which means the emphazisis of a C, so the solution is to substitue current C with the backup C.");
+        update( g );
 end
 
-rule "Realizacija taktike napadi iz tranzicije sa Playerem u najboljoj formi na poziciji pleja-1"
+rule "The score is -10 and 25 minutes has been passed"
 lock-on-active true
     when
-        u : Game(taktika=="Napadi iz tranzicije sa dobrim plejom"&&plej.indexForme<rezervniPlej.indexForme&&rezervniPlej.indexForme>plejBek.indexForme,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(minute>25,score>-10)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Trenutna taktika je napad iz tranzicije sa dobrim plejmejkerom pa je potrebno uvesti u igri plejmejkera u najboljoj formi na utakmici.");
-        update( u );
+    	g.setTactic("Transitional attack with better playing PG");	
+        update( g );
 end
 
-rule "Realizacija taktike napadi iz tranzicije sa Playerem u najboljoj formi na poziciji pleja-2"
+rule "Realisation of transitional attack with better playing PG-1"
 lock-on-active true
     when
-        u : Game(taktika=="Napadi iz tranzicije sa dobrim plejom"&&plej.indexForme<plejBek.indexForme&&rezervniPlej.indexForme<plejBek.indexForme,plejBek.povredjen==false,plejBek.iskljucen==false)
+        g : Game(tactic=="Transitional attack with better playing PG"&&pg.pir<subsPg.pir&&subsPg.pir>pgSg.pir,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getPlejBek());
-    	u.setPgBek(pomocna);
-    	  	u.dodajObjasnjenje("Trenutna taktika je napad iz tranzicije sa dobrim plejmejkerom pa je potrebno uvesti u igri plejmejkera u najboljoj formi na utakmici.");	
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("Current tactic is transitional attack with better playing PG, which means the emphazisis of a PG, so the solution is to substitue current PG with the backup PG.");
+        update( g );
 end
 
-rule "Poslednji napad i ekipa nije u bonusu-prva cetvrtina"
+rule "Realisation of transitional attack with better playing PG-2"
 lock-on-active true
     when
-        u : Game(minut>8&&licneGreskeDoBonusa>2)
+        g : Game(tactic=="Napadi iz tranzicije sa dobrim pgom"&&pg.pir<pgSg.pir&&subsPg.pir<pgSg.pir,pgSg.hurt==false,pgSg.sentOff==false)
     then
-    	u.setTaktika("Agresivna igra na granici faula");
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getPgSg());
+    	g.setPgSg(helpVariable);
+    	  	g.addExplanation("Current tactic is transitional attack with better playing PG, which means the emphazisis of a PG, so the solution is to substitue current PG with the PG/SG.");	
+        update( g );
 end
 
-rule "Poslednji napad i ekipa nije u bonusu-druga cetvrtina"
+rule "Last minute and the team hasn't furfilled the bonus-1Q"
 lock-on-active true
     when
-        u : Game(minut>18&&licneGreskeDoBonusa>2)
+        g : Game(minute>8&&personalFoulsUntilBonus>2)
     then
-    	u.setTaktika("Agresivna igra na granici faula");
-        update( u );
+    	g.setTactic("Aggressive defense play");
+        update( g );
 end
 
-rule "Poslednji napad i ekipa nije u bonusu-treca cetvrtina"
+rule "Last minute and the team hasn't furfilled the bonus-2Q"
 lock-on-active true
     when
-        u : Game(minut>28&&licneGreskeDoBonusa>2)
+        g : Game(minute>18&&personalFoulsUntilBonus>2)
     then
-    	u.setTaktika("Agresivna igra na granici faula");
-        update( u );
+    	g.setTactic("Aggressive defense play");
+        update( g );
 end
 
-rule "Poslednji napad i ekipa nije u bonusu-cetvrta cetvrtina"
+rule "Last minute and the team hasn't furfilled the bonus-3Q"
 lock-on-active true
     when
-        u : Game(minut>38&&licneGreskeDoBonusa>2)
+        g : Game(minute>28&&personalFoulsUntilBonus>2)
     then
-    	u.setTaktika("Agresivna igra na granici faula");
-        update( u );
-end
-rule "Realizacija agresivne taktike-1"
-lock-on-active true
-    when
-        u : Game(taktika=="Agresivna taktika na granici faula"&& minut>20 && krilo.brLicnihGreski>rezervnoKrilo.brLicnihGreski,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
-    then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);	
-    	u.dodajObjasnjenje("Trenutna taktika je agresivna igra na ivic faula, proščo je više od 20 minuta, pa je potrebno uvesti krilo sa manje ličnih grešaka, sprečavajući rizik od problema sa ličnim greškama.");
-        update( u );
+    	g.setTactic("Aggressive defense play");
+        update( g );
 end
 
-rule "Realizacija agresivne taktike-2"
+rule "Last minute and the team hasn't furfilled the bonus-4Q"
 lock-on-active true
     when
-        u : Game(taktika=="Agresivna taktika na granici faula" && minut>20 && bek.brLicnihGreski>rezervniBek.brLicnihGreski && rezervniBek.brLicnihGreski < plejBek.brLicnihGreski,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game(minute>38&&personalFoulsUntilBonus>2)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);	
-    	u.dodajObjasnjenje("Trenutna taktika je agresivna igra na ivic faula, proščo je više od 20 minuta, pa je potrebno uvesti beka sa manje ličnih grešaka, sprečavajući rizik od problema sa ličnim greškama.");
-        update( u );
+    	g.setTactic("Aggressive defense play");
+        update( g );
+end
+rule "Realisation of aggresive play-1"
+lock-on-active true
+    when
+        g : Game(tactic=="Aggressive defense play"&& minute>20 && sf.personalFouls>subsSf.personalFouls,subsSf.hurt==false,subsSf.sentOff==false)
+    then
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("The more than 20 minutes have been passed, and the current tactic is aggressive defense play, so the solution is to set the SF with less personal fouls.");
+        update( g );
 end
 
-rule "Realizacija agresivne taktike-3"
+rule "Realisation of aggresive play-2"
 lock-on-active true
     when
-        u : Game(taktika=="Agresivna taktika na granici faula" && minut>20 && bek.brLicnihGreski>plejBek.brLicnihGreski && rezervniBek.brLicnihGreski > plejBek.brLicnihGreski,plejBek.povredjen==false,plejBek.iskljucen==false)
+        g : Game(tactic=="Aggressive defense play" && minute>20 && sg.personalFouls>subsSg.personalFouls && subsSg.personalFouls < pgSg.personalFouls,subsSg.hurt==false,subsSg.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getPlejBek());
-    	u.setPgBek(pomocna);	
-    	u.dodajObjasnjenje("Trenutna taktika je agresivna igra na ivic faula, proščo je više od 20 minuta, pa je potrebno uvesti krilo sa manje ličnih grešaka, sprečavajući rizik od problema sa ličnim greškama.");
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSg());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("The more than 20 minutes have been passed, and the current tactic is aggressive defense play, so the solution is to set the SG with less personal fouls.");
+        update( g );
 end
 
-rule "Ako je domacin onda je vazna Game"
+rule "Realisation of aggresive play-3"
 lock-on-active true
     when
-        u : Game(domacin==true)
+        g : Game(tactic=="Aggressive defense play" && minute>20 && sg.personalFouls>pgSg.personalFouls && subsSf.personalFouls > pgSg.personalFouls,pgSg.hurt==false,pgSg.sentOff==false)
     then
-    	u.setVaznostUtakmice(true);	
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getPgSg());
+    	g.setPgSg(helpVariable);	
+    	g.addExplanation("The more than 20 minutes have been passed, and the current tactic is aggressive defense play, so the solution is to set the SG with less personal fouls.");
+        update( g );
 end
 
-rule "Ako je vazna Game onda postaviti agresivnu taktiku"
+rule "If the team is host the game is important"
 lock-on-active true
     when
-        u : Game(vaznostUtakmice==true)
+        g : Game(host==true)
     then
-    	u.setTaktika("Agresivna taktika na granici faula");
-        update( u );
+    	g.setImportanceOfGame(true);;	
+        update( g );
 end
 
-rule "Izmena povredjenog pleja"
+rule "If the game is important set the aggressive tactic"
 lock-on-active true
     when
-        u : Game(plej.povredjen==true,rezervniPlej.povredjen==false,rezervniPlej.iskljucen==false)
+        g : Game(importanceOfGame==true)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji plejmejkera.");
-        update( u );
+    	g.setTactic("Aggressive defense play");
+        update( g );
 end
 
-rule "Izmena povredjenog beka"
+rule "Substitute hurted PG"
 lock-on-active true
     when
-        u : Game(bek.povredjen==true,rezervniBek.povredjen==false,rezervniBek.iskljucen==false)
+        g : Game(pg.hurt==true,subsPg.hurt==false,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);	
-    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji beka.");
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("It is needed to substitute hurted PG.");
+        update( g );
 end
 
-rule "Izmena povredjenog krila"
+rule "Substitute hurted SG"
 lock-on-active true
     when
-        u : Game(krilo.povredjen==true,rezervnoKrilo.povredjen==false,rezervnoKrilo.iskljucen==false)
+        g : Game(sg.hurt==true,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);
-    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji beka.");	
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSf());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("It is needed to substitute hurted SG.");
+        update( g );
 end
 
-rule "Izmena povredjenog krilnog centra"
+rule "Substitute hurted SF"
 lock-on-active true
     when
-        u : Game(krilniCentar.povredjen==true,rezervniKrilniCentar.povredjen==false,rezervniKrilniCentar.iskljucen==false)
+        g : Game(sf.hurt==true,subsSf.hurt==false,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getRezervniKrilniCentar());
-    	u.setRezervniKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Potrebno je izmeniti povredjenog igrača na poziciji krilnog centra.");
-        update( u );
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);
+    	g.addExplanation("It is needed to substitute hurted SF.");	
+        update( g );
 end
 
-rule "Izmena povredjenog centra"
+rule "Substitute hurted PF"
 lock-on-active true
     when
-        u : Game(centar.povredjen==true,rezervniCentar.povredjen==false,rezervniCentar.iskljucen==false)
+        g : Game(pf.hurt==true,subsPf.hurt==false,subsPf.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setRezervniCentar(pomocna);	
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getSubsPf());
+    	g.setSubsPf(helpVariable);	
+    	g.addExplanation("It is needed to substitute hurted PF.");
+        update( g );
 end
 
-rule "Iskljucen za pet licnih gresaka-centar"
+rule "Substitute hurted C"
 lock-on-active true
     when
-        u : Game(centar.BrLicnihGreski==5)
+        g : Game(c.hurt==true,subsC.hurt==false,subsC.sentOff==false)
     then
-    	u.getCentar().setIskljucen(true);
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setSubsC(helpVariable);
+    	g.addExplanation("It is needed to substitute hurted C.");	
+        update( g );
 end
 
-rule "Iskljucen za pet licnih gresaka-krilni centar"
+rule "C sent off with 5 personal fouls"
 lock-on-active true
     when
-        u : Game(krilniCentar.BrLicnihGreski==5)
+        g : Game(c.personalFouls==5)
     then
-    	u.getKrilniCentar().setIskljucen(true);
-        update( u );
+    	g.getC().setSentOff(true);
+        update( g );
 end
 
-rule "Iskljucen za pet licnih gresaka-krilo"
+rule "PF sent off with 5 personal fouls"
 lock-on-active true
     when
-        u : Game(krilo.BrLicnihGreski==5)
+        g : Game(pf.personalFouls==5)
     then
-    	u.getKrilo().setIskljucen(true);
-        update( u );
+    	g.getPf().setSentOff(true);
+        update( g );
 end
 
-rule "Iskljucen za pet licnih gresaka-bek"
+rule "SF sent off with 5 personal fouls"
 lock-on-active true
     when
-        u : Game(bek.BrLicnihGreski==5)
+        g : Game(sf.personalFouls==5)
     then
-    	u.getBek().setIskljucen(true);
-        update( u );
+    	g.getSf().setSentOff(true);
+        update( g );
 end
 
-rule "Iskljucen za pet licnih gresaka-plej"
+rule "SG sent off with 5 personal fouls"
 lock-on-active true
     when
-        u : Game(plej.BrLicnihGreski==5)
+        g : Game(sg.personalFouls==5)
     then
-    	u.getPlej().setIskljucen(true);
-        update( u );
+    	g.getSg().setSentOff(true);
+        update( g );
 end
 
-rule "Izmena iskljucenog Playera-plej"
+rule "PG sent off with 5 personal fouls"
 lock-on-active true
     when
-        u : Game(plej.iskljucen==true,rezervniPlej.iskljucen==false)
+        g : Game(pg.personalFouls==5)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Isključen plejmejker mora biti izmenjen.");
-        update( u );
+    	g.getPg().setSentOff(true);
+        update( g );
 end
 
-rule "Izmena iskljucenog Playera-bek"
+rule "Substitute sent off PG"
 lock-on-active true
     when
-        u : Game(bek.iskljucen==true,rezervniBek.iskljucen==false)
+        g : Game(pg.sentOff==true,subsPg.sentOff==false)
     then
-    	Player pomocna = u.getBek();
-    	u.setSg(u.getRezervniBek());
-    	u.setRezervniBek(pomocna);	
-    	u.dodajObjasnjenje("Isključen bek mora biti izmenjen.");
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("Sent off PG needs to be substituted.");
+        update( g );
 end
 
-
-rule "Izmena iskljucenog Playera-krilo"
+rule "Substitute sent off SG"
 lock-on-active true
     when
-        u : Game(krilo.iskljucen==true,rezervnoKrilo.iskljucen==false)
+        g : Game(sg.sentOff==true,subsSg.sentOff==false)
     then
-    	Player pomocna = u.getKrilo();
-    	u.setSf(u.getRezervnoKrilo());
-    	u.setRezervnoKrilo(pomocna);	
-    	u.dodajObjasnjenje("Isključeno krilo mora biti izmenjen.");
-        update( u );
+    	Player helpVariable = g.getSg();
+    	g.setSg(g.getSubsSg());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("Sent off SG needs to be substituted.");
+        update( g );
 end
 
 
-rule "Izmena iskljucenog Playera-krilni centar"
+rule "Substitute sent off SF"
 lock-on-active true
     when
-        u : Game(krilniCentar.iskljucen==true,rezervniKrilniCentar.iskljucen==false)
+        g : Game(sf.sentOff==true,subsSf.sentOff==false)
     then
-    	Player pomocna = u.getKrilniCentar();
-    	u.setPf(u.getRezervniKrilniCentar());
-    	u.setRezervniKrilniCentar(pomocna);	
-    	u.dodajObjasnjenje("Isključen krilni centar mora biti izmenjen.");
-        update( u );
+    	Player helpVariable = g.getSf();
+    	g.setSf(g.getSubsSf());
+    	g.setSubsSf(helpVariable);	
+    	g.addExplanation("Sent off SF needs to be substituted.");
+        update( g );
 end
 
-rule "Izmena iskljucenog Playera-centar"
+
+rule "Substitute sent off PF"
 lock-on-active true
     when
-        u : Game(centar.iskljucen==true,rezervniCentar.iskljucen==false)
+        g : Game(pf.sentOff==true,subsPf.sentOff==false)
     then
-    	Player pomocna = u.getCentar();
-    	u.setC(u.getRezervniCentar());
-    	u.setRezervniCentar(pomocna);	
-    	u.dodajObjasnjenje("Isključen centar mora biti izmenjen.");
-        update( u );
+    	Player helpVariable = g.getPf();
+    	g.setPf(g.getSubsPf());
+    	g.setSubsPf(helpVariable);	
+    	g.addExplanation("Sent off PF needs to be substituted.");
+        update( g );
 end
 
-rule "Finis utakmice i mala razlika-1"
+rule "Substitute sent off C"
 lock-on-active true
     when
-        u : Game(minut>39.5,plej.prosecanProcenatSuta1<rezervniPlej.prosecanProcenatSuta1,rezervniPlej.prosecanProcenatSuta1>plejBek.prosecanProcenatSuta1,rezervniPlej.iskljucen==false,rezervniPlej.povredjen==false)
+        g : Game(c.sentOff==true,subsC.sentOff==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getRezervniPlej());
-    	u.setRezervniPlej(pomocna);	
-    	u.dodajObjasnjenje("Ostalo je 30 ili manje sekundi do kraja utakmice, pa je potrebno uvesti u igru plejmejkera sa najboljim šutem za 1, jer se očekuje penal završnica.");
-        update( u );
+    	Player helpVariable = g.getC();
+    	g.setC(g.getSubsC());
+    	g.setSubsC(helpVariable);	
+    	g.addExplanation("Substitute sent off C");
+        update( g );
 end
 
-rule "Finis utakmice i mala razlika-2"
+rule "Finish of the game and score difference is small-1"
 lock-on-active true
     when
-        u : Game(minut>39.5,plej.prosecanProcenatSuta1<plejBek.prosecanProcenatSuta1,rezervniPlej.prosecanProcenatSuta1<plejBek.prosecanProcenatSuta1,plejBek.iskljucen==false,plejBek.povredjen==false)
+        g : Game(minute>39.5 && score < 3 && score > -3 && pg.averagePercentageOnePoint<subsPg.averagePercentageOnePoint && subsPg.averagePercentageOnePoint>pgSg.averagePercentageOnePoint && subsPg.sentOff==false && subsPg.hurt==false)
     then
-    	Player pomocna = u.getPlej();
-    	u.setPg(u.getPlejBek());
-    	u.setPgBek(pomocna);	
-    	u.dodajObjasnjenje("Ostalo je 30 ili manje sekundi do kraja utakmice, pa je potrebno uvesti u igru plejmejkera sa najboljim šutem za 1, jer se očekuje penal završnica.");
-        update( u );
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getSubsPg());
+    	g.setSubsPg(helpVariable);	
+    	g.addExplanation("There is only 30 second until the end of the game, and the score difference is small, so the solution is to substitute PG with the better one point shoting PG, because lot of one point shots are expected.");
+        update( g );
+end
+
+rule "Finish of the game and score difference is small-2"
+lock-on-active true
+    when
+        g : Game(minute>39.5,pg.averagePercentageOnePoint<pgSg.averagePercentageOnePoint,subsPg.averagePercentageOnePoint<pgSg.averagePercentageOnePoint,pgSg.sentOff==false,pgSg.hurt==false)
+    then
+    	Player helpVariable = g.getPg();
+    	g.setPg(g.getPgSg());
+    	g.setPgSg(helpVariable);	
+    	g.addExplanation("There is only 30 second until the end of the game, and the score difference is small, so the solution is to substitute PG with the better one point shoting PG, because lot of one point shots are expected.");
+        update( g );
 end
 
