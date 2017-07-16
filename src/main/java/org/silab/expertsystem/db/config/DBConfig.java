@@ -30,12 +30,16 @@ public class DBConfig {
         
   	}
 
-	public void setDatabase(){
+	public void setSession(){
 		if(dbProperties.get("type").equals("MongoDB")){
 			dataSource = new MongoDataSource();
 			dbSession = new MongoDBSession();
 			dbSession.setConnection(dataSource.connect(dbProperties));
 		}
+	}
+	
+	public DBSession getSession(){
+		return dbSession;
 	}
 
 

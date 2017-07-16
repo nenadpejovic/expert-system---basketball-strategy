@@ -1,47 +1,65 @@
 
 package org.silab.expertsystem.model;
 
+import org.silab.expertsystem.config.annotations.ModelTable;
+
+@ModelTable(name="player")
 public class Player {
 
-	String name;
-	String surname;
+	private String team;
 	
-	String position;
+	private String name;
+	private String surname;
+	
+	private String position;
 
-	int height;
-	int weight;
+	private double height;
+	private double weight;
 	
-	double percentageOnePoint;
-	double averagePercentageOnePoint;
-	double percentageTwoPoints;
-	double averagePercentageTwoPoints;
-	double percentageThreePoints;
-	double averagePercentageThreePoints;
+	private double percentageOnePoint;
+	private double averagePercentageOnePoint;
+	private double percentageTwoPoints;
+	private double averagePercentageTwoPoints;
+	private double percentageThreePoints;
+	private double averagePercentageThreePoints;
 	
-	int points;
-	double averagePoints;
-	int rebounds;
-	double averageRebounds;
-	int steals;
-	int asists;
-	double averageAssits;
-	double averageSteals;
-	int turnovers;
-	double averageTurnovers;
-	double time;
-	double averageTime;
-	int blocks;
-	double averageBlocks;
+	private int points;
+	private double averagePoints;
+	private int rebounds;
+	private double averageRebounds;
+	private int steals;
+	private int asists;
+	private double averageAssists;
+	private double averageSteals;
+	private int turnovers;
+	private double averageTurnovers;
+	private double time;
+	private double averageTime;
+	private int blocks;
+	private double averageBlocks;
 	
-	int pir;
-	double indexOfTiredness;
+	private int pir;
+	private double indexOfTiredness;
 	
-	int personalFouls;
+	private int personalFouls;
+	 
+	private boolean hurt;
+	private boolean sentOff;
 	
-	boolean hurt;
-	boolean sentOff;
+	private String qualityOfDefensePlay;
 	
-    String qualityOfDeffensePlay;
+	public Player(){
+		
+	}
+    
+	public String getTeam() {
+		return team;
+	}
+
+	public void setTeam(String team) {
+		this.team = team;
+	}
+
 
 	public String getName() {
 		return name;
@@ -67,19 +85,19 @@ public class Player {
 		this.position = position;
 	}
 
-	public int getHeight() {
+	public double getHeight() {
 		return height;
 	}
 
-	public void setHeight(int height) {
+	public void setHeight(double height) {
 		this.height = height;
 	}
 
-	public int getWeight() {
+	public double getWeight() {
 		return weight;
 	}
 
-	public void setWeight(int weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 
@@ -179,12 +197,12 @@ public class Player {
 		this.asists = asists;
 	}
 
-	public double getAverageAssits() {
-		return averageAssits;
+	public double getAverageAssists() {
+		return averageAssists;
 	}
 
-	public void setAverageAssits(double averageAssits) {
-		this.averageAssits = averageAssits;
+	public void setAverageAssits(double averageAssists) {
+		this.averageAssists = averageAssists;
 	}
 
 	public double getAverageSteals() {
@@ -283,11 +301,11 @@ public class Player {
 		this.sentOff = sentOff;
 	}
 
-	public String getQualityOfDeffensePlay() {
-		return qualityOfDeffensePlay;
+	public String getQualityOfDefensePlay() {
+		return qualityOfDefensePlay;
 	}
 
-	public void setQualityOfDeffensePlay(String qualityOfDeffensePlay) {
-		this.qualityOfDeffensePlay = qualityOfDeffensePlay;
+	public void setQualityOfDefensePlay(String qualityOfDefensePlay) {
+		this.qualityOfDefensePlay = qualityOfDefensePlay;
 	}
 }
