@@ -28,7 +28,7 @@ public class Player {
 	private int rebounds;
 	private double averageRebounds;
 	private int steals;
-	private int asists;
+	private int assists;
 	private double averageAssists;
 	private double averageSteals;
 	private int turnovers;
@@ -46,6 +46,19 @@ public class Player {
 	private boolean hurt;
 	private boolean sentOff;
 	
+	private boolean lineup;	
+	public boolean isLineup() {
+		return lineup;
+	}
+
+	public void setLineup(boolean lineup) {
+		this.lineup = lineup;
+	}
+
+	public void setAverageAssists(double averageAssists) {
+		this.averageAssists = averageAssists;
+	}
+
 	private String qualityOfDefensePlay;
 	
 	public Player(){
@@ -189,12 +202,12 @@ public class Player {
 		this.steals = steals;
 	}
 
-	public int getAsists() {
-		return asists;
+	public int getAssists() {
+		return assists;
 	}
 
-	public void setAsists(int asists) {
-		this.asists = asists;
+	public void setAssists(int assists) {
+		this.assists = assists;
 	}
 
 	public double getAverageAssists() {
@@ -307,5 +320,18 @@ public class Player {
 
 	public void setQualityOfDefensePlay(String qualityOfDefensePlay) {
 		this.qualityOfDefensePlay = qualityOfDefensePlay;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj instanceof Player){
+			Player p = (Player)obj;
+			if(this.getName().equals(p.getName())&&this.getSurname().equals(((Player) obj).getSurname())){
+				return true;
+			} else {
+				return false;
+			}
+		}
+		return false;
 	}
 }
