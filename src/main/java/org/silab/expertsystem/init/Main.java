@@ -54,8 +54,9 @@ public class Main {
 		
 		Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"), game));
 		thread.start();
+		
 		while(true){
-			
+			System.out.println(game.getopponentPf().getName());
 		}
 		
 	}

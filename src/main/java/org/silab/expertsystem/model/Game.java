@@ -16,11 +16,11 @@ public class Game {
 	Player pgSg;
 	StringBuffer explanation = new StringBuffer();
 
-	int score;
+	long score;
 	double minute;
 	String tactic;
 	String qualityOfOpponent;
-	int personalFoulsUntilBonus;
+	long personalFoulsUntilBonus;
 	boolean host;
 	boolean importanceOfGame;
 	boolean ball;
@@ -143,11 +143,11 @@ public class Game {
 		this.explanation.append(explanation);
 	}
 
-	public int getScore() {
+	public long getScore() {
 		return score;
 	}
 
-	public void setScore(int score) {
+	public void setScore(long score) {
 		this.score = score;
 	}
 
@@ -175,11 +175,11 @@ public class Game {
 		this.qualityOfOpponent = qualityOfOpponent;
 	}
 
-	public int getPersonalFoulsUntilBonus() {
+	public long getPersonalFoulsUntilBonus() {
 		return personalFoulsUntilBonus;
 	}
 
-	public void setPersonalFoulsUntilBonus(int personalFoulsUntilBonus) {
+	public void setPersonalFoulsUntilBonus(long personalFoulsUntilBonus) {
 		this.personalFoulsUntilBonus = personalFoulsUntilBonus;
 	}
 

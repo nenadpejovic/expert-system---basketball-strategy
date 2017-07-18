@@ -93,11 +93,11 @@ public class StatsMessageConsumer implements Runnable {
 		JSONObject gameObject = (JSONObject) object.get("game");
 
 		game.setHost(true);
-		game.setScore((int) gameObject.get("score"));
+		game.setScore((long) gameObject.get("score"));
 		game.setQualituOfOpponent((String) gameObject.get("quality of away team"));
-		game.setBall((boolean) gameObject.get("score"));
-		game.setPersonalFoulsUntilBonus((int) gameObject.get("bonus"));
-		game.setMinute((double) gameObject.get("score"));
+		game.setBall((boolean) gameObject.get("ball"));
+		game.setPersonalFoulsUntilBonus((long) gameObject.get("bonus"));
+		game.setMinute((double) gameObject.get("minute"));
 
 		game.setImportanceOfGame(true);
 		game.setTactic("");
@@ -115,32 +115,47 @@ public class StatsMessageConsumer implements Runnable {
 	}
 	
 	public void resolveAwayLineup(){
+		
+
 		for(Player player: players){
+
 			if(player.getTeam().equals("away")){
-				if(player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player)){
+				if(player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getopponentPg()==null){
 					game.setopponentPg(player);
-				} else if(player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player)) {
+					setted.add(player);
+				} else if(player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getopponentSg()==null) {
 					game.setopponentSg(player);
-				} else if (player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player)){
+					setted.add(player);
+				} else if (player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getopponentSf()==null){
 					game.setopponentSf(player);
-				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player)){
-					game.setopponentPg(player);
-				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player)){
-					game.setopponentC(player);
-				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player)){
-					game.setopponentSubsPg(player);
-				} else 	if(!player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player)){
-					game.setopponentsSubsSg(player);
-				} else if(!player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player)) {
-					game.setopponentSubsSf(player);
-				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player)){
+					setted.add(player);
+				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getopponentPf()==null){
 					game.setopponentPf(player);
-				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player)){
+					setted.add(player);
+				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getopponentC()==null){
+					game.setopponentC(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getopponentSubsPg()==null){
+					game.setopponentSubsPg(player);
+					setted.add(player);
+				} else 	if(!player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getopponentsSubsSg() == null){
+					game.setopponentsSubsSg(player);
+					setted.add(player);
+				} else if(!player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getopponentSubsSf() == null) {
+					game.setopponentSubsSf(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getopponentSubsPf() == null){
+					game.setopponentSubsPf(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getopponentSubsC() == null){
 					game.setopponentSubsC(player);
-				} else if (player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player)){
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getopponentsSubsPgSg() == null){
 					game.setopponentsSubsPgSg(player);
-				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player)){
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getopponentSubsCPf() == null){
 					game.setopponentSubsCPf(player);
+					setted.add(player);
 				}
 			}
 		}
@@ -153,30 +168,42 @@ public class StatsMessageConsumer implements Runnable {
 	public void resolveHomeLineup(){
 		for(Player player: players){
 			if(player.getTeam().equals("home")){
-				if(player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player)){
+				if(player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getPg()==null){
 					game.setPg(player);
-				} else if(player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player)) {
+					setted.add(player);
+				} else if(player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getSg()==null) {
 					game.setSg(player);
-				} else if (player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player)){
+					setted.add(player);
+				} else if (player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getSf()==null){
 					game.setSf(player);
-				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player)){
-					game.setPg(player);
-				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player)){
-					game.setC(player);
-				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player)){
-					game.setSubsPg(player);
-				} else 	if(!player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player)){
-					game.setSubsSg(player);
-				} else if(!player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player)) {
-					game.setSubsSf(player);
-				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player)){
+					setted.add(player);
+				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getPf() == null){
 					game.setPf(player);
-				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player)){
+					setted.add(player);
+				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getC()==null){
+					game.setC(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getSubsPg()==null){
+					game.setSubsPg(player);
+					setted.add(player);
+				} else 	if(!player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getSubsSg()==null){
+					game.setSubsSg(player);
+					setted.add(player);
+				} else if(!player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getSubsSf()==null) {
+					game.setSubsSf(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getSubsPf()==null){
+					game.setSubsPf(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getSubsC()==null){
 					game.setSubsC(player);
-				} else if (player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player)){
-					game.setPgSg(player);;
-				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player)){
-					game.setcPf(player);;
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getPgSg()==null){
+					game.setPgSg(player);
+					setted.add(player);
+				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getcPf()==null){
+					game.setcPf(player);
+					setted.add(player);
 				}
 			}
 		}
@@ -248,7 +275,7 @@ public class StatsMessageConsumer implements Runnable {
 	
 	public Player findPlayerFromList(String name, String surname){
 		for(Player player : players){
-			if(player.getName().equalsIgnoreCase("name") && player.getName().equalsIgnoreCase("surname")){
+			if(player.getName().equalsIgnoreCase(name) && player.getSurname().equalsIgnoreCase(surname)){
 				return player;
 			}
 		}
