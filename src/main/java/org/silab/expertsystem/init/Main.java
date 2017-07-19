@@ -7,6 +7,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import org.drools.KnowledgeBase;
+import org.drools.KnowledgeBaseFactory;
+import org.drools.builder.KnowledgeBuilder;
+import org.drools.builder.KnowledgeBuilderFactory;
+import org.drools.core.management.KieBaseConfigurationMonitor;
+import org.drools.core.marshalling.impl.ProtobufMessages.KnowledgeSession;
+import org.kie.api.KieBase;
+import org.kie.api.KieBaseConfiguration;
+import org.kie.api.KieServices;
+import org.kie.api.conf.EventProcessingOption;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.KieSessionConfiguration;
+import org.kie.api.runtime.conf.ClockTypeOption;
 import org.silab.expertsystem.consumer.StatsMessageConsumer;
 import org.silab.expertsystem.db.broker.DBSession;
 import org.silab.expertsystem.db.broker.MongoDBSession;
@@ -21,6 +35,31 @@ public class Main {
 
 
 	public static void main(String[] args) {
+		
+		  
+		
+	      
+		  KieBaseConfiguration kieConfiguration = new  KieServices.Factory().get().newKieBaseConfiguration();
+		  
+          kieConfiguration.setProperty("drools.dialect.mvel.strict", "false");  
+          kieConfiguration.setProperty("org.kie.demo", "false");  
+          kieConfiguration.setOption(EventProcessingOption.STREAM);  
+          
+	      KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+          
+	      KieServices ks = new KieServices.Factory().get();  
+	      KieContainer kContainer = ks.getKieClasspathContainer();
+	      KnowledgeBase kieBase = KnowledgeBaseFactory.newKnowledgeBase();
+	      
+	      
+	      KieSessionConfiguration sessionConfiguration = (KieSessionConfiguration) KnowledgeBaseFactory.newKnowledgeSessionConfiguration();  
+          sessionConfiguration.setOption(ClockTypeOption.get("realtime"));  
+	      
+	      KieSession kSession = kContainer.newKieSession("game-event", sessionConfiguration);
+	      
+          kieBase.addKnowledgePackages(kbuilder.getKnowledgePackages());  
+	      //KieSession kSession = ;  
+	      
 		
 	
 		Properties props = new Properties();
@@ -54,6 +93,9 @@ public class Main {
 		
 		Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"), game));
 		thread.start();
+		
+		
+		
 		
 		while(true){
 			System.out.println(game.getopponentPf().getName());

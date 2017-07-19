@@ -3,6 +3,11 @@ package org.silab.rules
  
 import org.silab.expertsystem.model.Player
 import org.silab.expertsystem.model.Game
+	
+
+declare Game 
+	@role( event )
+end	
 
 rule "Bad start of a PG"
 lock-on-active true
