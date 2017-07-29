@@ -20,7 +20,9 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.silab.expertsystem.kie.KieService;
 import org.silab.expertsystem.model.Game;
+import org.silab.expertsystem.model.GameEvent;
 import org.silab.expertsystem.model.Player;
 
 public class StatsMessageConsumer implements Runnable {
@@ -28,15 +30,18 @@ public class StatsMessageConsumer implements Runnable {
 	List<Player> players;
 	String url;
 	String queueName;
-	Game game;
-	
-	List<Player> setted = new LinkedList<>();
+	GameEvent game;
+	Game g;
+	List<Player> setted;
+	KieService ks;
 
-	public StatsMessageConsumer(List<Player> players, String url, String queueName, Game game) {
+	public StatsMessageConsumer(List<Player> players, String url, String queueName, KieService ks, Game game) {
+		this.g = game;
 		this.players = players;
 		this.url = url;
 		this.queueName = queueName;
-		this.game = game;
+		this.setted = new LinkedList<>();
+		this.ks = ks;
 	}
 
 	@Override
@@ -59,7 +64,9 @@ public class StatsMessageConsumer implements Runnable {
 					try {
 						if (message instanceof TextMessage) {
 							TextMessage textMessage = (TextMessage) message;
+							game = new GameEvent();
 							populateGame(textMessage);
+							ks.injectEvent(game);
 						}
 					} catch (JMSException e) {
 						System.out.println("Caught:" + e);
@@ -92,15 +99,13 @@ public class StatsMessageConsumer implements Runnable {
 
 		JSONObject gameObject = (JSONObject) object.get("game");
 
-		game.setHost(true);
 		game.setScore((long) gameObject.get("score"));
-		game.setQualituOfOpponent((String) gameObject.get("quality of away team"));
 		game.setBall((boolean) gameObject.get("ball"));
 		game.setPersonalFoulsUntilBonus((long) gameObject.get("bonus"));
 		game.setMinute((double) gameObject.get("minute"));
 
-		game.setImportanceOfGame(true);
 		game.setTactic("");
+		
 
 		JSONArray homePlayers = (JSONArray) object.get("home players");
 		parsePlayers(homePlayers);
@@ -111,6 +116,31 @@ public class StatsMessageConsumer implements Runnable {
 		unsetAll();
 		resolveHomeLineup();
 		resolveAwayLineup();
+		
+		g.setPg(game.getPg());
+		g.setSg(game.getSg());
+		g.setSf(game.getSf());
+		g.setPf(game.getPf());
+		g.setC(game.getC());
+		g.setSubsPg(game.getSubsPg());
+		g.setSubsSg(game.getSubsSg());
+		g.setSubsSf(game.getSubsSf());
+		g.setSubsPf(game.getSubsPf());
+		g.setcPf(game.getcPf());
+		g.setPgSg(game.getPgSg());
+		g.setOpponentPg(game.getopponentPg());
+		g.setOpponentSg(game.getopponentSg());
+		g.setOpponentSf(game.getopponentSf());
+		g.setOpponentPf(game.getopponentPf());
+		g.setOpponentC(game.getopponentC());
+		g.setOpponentSf(game.getopponentSf());
+		g.setOpponentSubsPg(game.getopponentSubsPg());
+		g.setOpponentsSubsSg(game.getopponentsSubsSg());
+		g.setOpponentSubsSf(game.getopponentSubsSf());
+		g.setOpponentSubsPf(game.getopponentSubsPf());
+		g.setOpponentSubsC(game.getopponentSubsC());
+		g.setOpponentsSubsPgSg(game.getopponentsSubsPgSg());
+		g.setOpponentSubsCPf(game.getopponentSubsCPf());
 
 	}
 	

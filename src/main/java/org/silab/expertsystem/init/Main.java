@@ -11,8 +11,6 @@ import org.drools.KnowledgeBase;
 import org.drools.KnowledgeBaseFactory;
 import org.drools.builder.KnowledgeBuilder;
 import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.core.management.KieBaseConfigurationMonitor;
-import org.drools.core.marshalling.impl.ProtobufMessages.KnowledgeSession;
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
@@ -28,7 +26,9 @@ import org.silab.expertsystem.db.config.DBConfig;
 import org.silab.expertsystem.db.dao.PlayerDao;
 import org.silab.expertsystem.db.dao.PlayerDaoImpl;
 import org.silab.expertsystem.db.datasource.DataSource;
+import org.silab.expertsystem.kie.KieService;
 import org.silab.expertsystem.model.Game;
+import org.silab.expertsystem.model.GameEvent;
 import org.silab.expertsystem.model.Player;
 
 public class Main {
@@ -38,27 +38,7 @@ public class Main {
 		
 		  
 		
-	      
-		  KieBaseConfiguration kieConfiguration = new  KieServices.Factory().get().newKieBaseConfiguration();
-		  
-          kieConfiguration.setProperty("drools.dialect.mvel.strict", "false");  
-          kieConfiguration.setProperty("org.kie.demo", "false");  
-          kieConfiguration.setOption(EventProcessingOption.STREAM);  
-          
-	      KnowledgeBuilder kbuilder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-          
-	      KieServices ks = new KieServices.Factory().get();  
-	      KieContainer kContainer = ks.getKieClasspathContainer();
-	      KnowledgeBase kieBase = KnowledgeBaseFactory.newKnowledgeBase();
-	      
-	      
-	      KieSessionConfiguration sessionConfiguration = (KieSessionConfiguration) KnowledgeBaseFactory.newKnowledgeSessionConfiguration();  
-          sessionConfiguration.setOption(ClockTypeOption.get("realtime"));  
-	      
-	      KieSession kSession = kContainer.newKieSession("game-event", sessionConfiguration);
-	      
-          kieBase.addKnowledgePackages(kbuilder.getKnowledgePackages());  
-	      //KieSession kSession = ;  
+
 	      
 		
 	
@@ -89,16 +69,22 @@ public class Main {
 			e.printStackTrace();
 		}
 		
-		Game game = new Game();
+		KieService ks = new KieService();
 		
-		Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"), game));
+		
+		Game game = new Game();
+		game.setImportanceOfGame(true);
+		game.setHost(true);
+		game.setQualityOfOpponent("excellent");
+		
+		ks.kieInit(game);
+		
+		Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"),ks,game));
 		thread.start();
 		
 		
-		
-		
 		while(true){
-			System.out.println(game.getopponentPf().getName());
+			//System.out.println(game.getopponentPf().getName());
 		}
 		
 	}

@@ -2,6 +2,7 @@
 package org.silab.rules
  
 import org.silab.expertsystem.model.Player
+import org.silab.expertsystem.model.GameEvent
 import org.silab.expertsystem.model.Game
 	
 
@@ -12,7 +13,8 @@ end
 rule "Bad start of a PG"
 lock-on-active true
     when
-        g : Game(minute < 2,score<-7,pg.pir < 1,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(minute < 2,score<-7,pg.pir < 1,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPg());
@@ -24,7 +26,8 @@ end
 rule "Bad start of a SG"
 lock-on-active true
     when
-        g : Game(minute < 2,score<-7,sg.pir < 1,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(minute < 2,score<-7,sg.pir < 1,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -36,7 +39,8 @@ end
 rule "Bad start of a SF"
 lock-on-active true
     when
-        g : Game(minute < 2,score<-7,sf.pir < 1,subsSf.hurt==false,subsSf.sentOff==false)
+        g : Game
+        ge : GameEvent(minute < 2,score<-7,sf.pir < 1,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -48,7 +52,8 @@ end
 rule "Bad start of a PF"
 lock-on-active true
     when
-        g : Game(minute < 2,score<-7,pf.pir < 1,subsPf.hurt==false,subsPf.sentOff==false)
+        g : Game
+        ge : GameEvent(minute < 2,score<-7,pf.pir < 1,subsPf.hurt==false,subsPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -60,7 +65,8 @@ end
 rule "Bad start of a C"
 lock-on-active true
     when
-        g : Game(minute < 2,score<-7,c.pir < 1,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(minute < 2,score<-7,c.pir < 1,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -72,7 +78,8 @@ end
 rule "Bad play of a PG and better play of a PG/SG"
 lock-on-active true
     when
-        g : Game(pg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPgSg());
@@ -84,7 +91,8 @@ end
 rule "Bad play of a PG and better play of a backup PG"
 lock-on-active true
     when
-        g : Game(pg.pir < -10,subsPg.pir > -10,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.pir < -10,subsPg.pir > -10,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -96,7 +104,8 @@ end
 rule "Bad play of a SG and better play of a backup SG"
 lock-on-active true
     when
-        g : Game(sg.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sg.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -108,7 +117,8 @@ end
 rule "Bad play of a SG and better play of a PG/SG"
 lock-on-active true
     when
-        g : Game(sg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(sg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getPgSg());
@@ -120,7 +130,8 @@ end
 rule "Bad play of a SF and better play of a backup SF"
 lock-on-active true
     when
-        g : Game(sf.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sf.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -132,7 +143,8 @@ end
 rule "Bad play of a PF and better play of a backup PF"
 lock-on-active true
     when
-        g : Game(pf.pir < -10,subsPf.pir > -10,subsPf.hurt==false,subsPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.pir < -10,subsPf.pir > -10,subsPf.hurt==false,subsPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -144,7 +156,8 @@ end
 rule "Bad play of a PF and better play of a PF/C"
 lock-on-active true
     when
-        g : Game(pf.pir < -10,cPf.pir > -10,cPf.hurt==false,cPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.pir < -10,cPf.pir > -10,cPf.hurt==false,cPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getcPf());
@@ -156,7 +169,8 @@ end
 rule "Bad play of a C and better play of a backup C"
 lock-on-active true
     when
-        g : Game(c.pir < -10,subsC.pir > -10,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.pir < -10,subsC.pir > -10,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -168,7 +182,8 @@ end
 rule "Bad play of a C and better play of a PF/C"
 lock-on-active true
     when
-        g : Game(c.pir < -10,cPf.pir > -10,cPf.hurt==false,cPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.pir < -10,cPf.pir > -10,cPf.hurt==false,cPf.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getcPf());
@@ -180,7 +195,8 @@ end
 rule "Bad play and tiredness of a PG"
 lock-on-active true
     when
-        g : Game(pg.pir < -5,pg.indexOfTiredness > 10,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.pir < -5,pg.indexOfTiredness > 10,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -192,7 +208,8 @@ end
 rule "Bad play and tiredness of a SG"
 lock-on-active true
     when
-        g : Game(sg.pir < -5,sg.indexOfTiredness > 10,subsSf.hurt==false,subsSf.sentOff==false)
+        g : Game
+        ge : GameEvent(sg.pir < -5,sg.indexOfTiredness > 10,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -204,7 +221,8 @@ end
 rule "Bad play and tiredness of a SF"
 lock-on-active true
     when
-        g : Game(sf.pir < -5,sf.indexOfTiredness > 10,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sf.pir < -5,sf.indexOfTiredness > 10,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -215,7 +233,8 @@ end
 rule "Bad play and tiredness of a PF"
 lock-on-active true
     when
-        g : Game(pf.pir < -5,pf.indexOfTiredness > 10,subsPf.hurt==false,subsPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.pir < -5,pf.indexOfTiredness > 10,subsPf.hurt==false,subsPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -227,7 +246,8 @@ end
 rule "Bad play and tiredness of a C"
 lock-on-active true
     when
-        g : Game(c.pir < -5,c.indexOfTiredness > 10,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.pir < -5,c.indexOfTiredness > 10,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -239,7 +259,8 @@ end
 rule "Issue with personal fouls of a PG and less number of personal fouls of a backup PG"
 lock-on-active true
     when
-        g : Game(pg.personalFouls >= 3,subsPg.personalFouls < 3 && minute > 20,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.personalFouls >= 3,subsPg.personalFouls < 3 && minute > 20,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -251,7 +272,8 @@ end
 rule "Issue with personal fouls of a PG and less number of personal fouls of a PG/SG"
 lock-on-active true
     when
-        g : Game(pg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPgSg());
@@ -263,7 +285,8 @@ end
 rule "Issue with personal fouls of a SG and less number of personal fouls of a backup SG"
 lock-on-active true
     when
-        g : Game(sg.personalFouls >= 3,subsSg.personalFouls < 3 && minute > 20,subsSg.hurt==false,subsSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(sg.personalFouls >= 3,subsSg.personalFouls < 3 && minute > 20,subsSg.hurt==false,subsSg.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSg());
@@ -275,7 +298,8 @@ end
 rule "Issue with personal fouls of a SG and less number of personal fouls of a PG/SG"
 lock-on-active true
     when
-        g : Game(sg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(sg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getPgSg());
@@ -287,7 +311,8 @@ end
 rule "Issue with personal fouls of a SF and less number of personal fouls of a backup SF"
 lock-on-active true
     when
-        g : Game(sf.personalFouls >= 3,subsSf.personalFouls < 3 && minute > 20,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sf.personalFouls >= 3,subsSf.personalFouls < 3 && minute > 20,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -297,9 +322,10 @@ lock-on-active true
 end
 
 rule "Issue with personal fouls of a PF and less number of personal fouls of a backup PF"
-lock-on-active true
+lock-on-active true	
     when
-        g : Game(pf.personalFouls >= 3,subsPf.personalFouls < 3 && minute > 20,subsPf.hurt==false,subsPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.personalFouls >= 3,subsPf.personalFouls < 3 && minute > 20,subsPf.hurt==false,subsPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -311,7 +337,8 @@ end
 rule "Issue with personal fouls of a PF and less number of personal fouls of a PF/C"
 lock-on-active true
     when
-        g : Game(pf.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getcPf());
@@ -323,7 +350,8 @@ end
 rule "Issue with personal fouls of a C and less number of personal fouls of a backup C"
 lock-on-active true
     when
-        g : Game(c.personalFouls >= 3,subsC.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.personalFouls >= 3,subsC.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -335,7 +363,8 @@ end
 rule "Issue with personal fouls of a C and less number of personal fouls of a PF/C"
 lock-on-active true
     when
-        g : Game(c.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,cPf.hurt==false,cPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,cPf.hurt==false,cPf.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getcPf());
@@ -347,7 +376,8 @@ end
 rule "Problems with game organization against low quality team"
 lock-on-active true
     when
-        g : Game(qualityOfOpponent =="slaba ekipa",minute>15,score > -5,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(qualityOfOpponent =="slaba ekipa",minute>15,score > -5,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -359,7 +389,8 @@ end
 rule "Last seconds before the end of a quarter and in the game is tall C."
 lock-on-active true
     when
-        g : Game((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&c.position=="C"&&cPf.position=="PC/C",cPf.hurt==false,cPf.sentOff==false)
+    	g : Game
+        ge : GameEvent((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&c.position=="C"&&cPf.position=="PC/C",cPf.hurt==false,cPf.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getcPf());
@@ -371,7 +402,8 @@ end
 rule "Last seconds before the end of a quarter and in the game is worse SG"
 lock-on-active true
     when
-        g : Game((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&sg.averagePercentageThreePoints<subsSf.averagePercentageThreePoints,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&sg.averagePercentageThreePoints<subsSf.averagePercentageThreePoints,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -383,7 +415,8 @@ end
 rule "Last seconds before the end of a quarter and in the game is worse shooting PG"
 lock-on-active true
     when
-        g : Game((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&pg.averagePercentageThreePoints<subsPg.averagePercentageThreePoints,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&pg.averagePercentageThreePoints<subsPg.averagePercentageThreePoints,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -395,7 +428,8 @@ end
 rule "The score is +10 and 25 minutes has been passed"
 lock-on-active true
     when
-        g : Game(minute>25,score>10)
+    	g : Game
+        ge : GameEvent(minute>25,score>10)
     then
     	g.setTactic("Positional attack with C");	
         update( g );
@@ -404,7 +438,8 @@ end
 rule "Realisation of a positional attack with better playing C-1"
 lock-on-active true
     when
-        g : Game(tactic=="Positional attack with C"&&c.position=="PF/C"&&cPf.pir>subsC.pir,cPf.hurt==false,cPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(tactic=="Positional attack with C"&&c.position=="PF/C"&&cPf.pir>subsC.pir,cPf.hurt==false,cPf.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getcPf());
@@ -416,7 +451,8 @@ end
 rule "Realisation of a positional attack with better playing C-2"
 lock-on-active true
     when
-        g : Game(tactic=="Positional attack with C"&&c.position=="PF/C"&&cPf.pir<subsC.pir,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(tactic=="Positional attack with C"&&c.position=="PF/C"&&cPf.pir<subsC.pir,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -428,7 +464,8 @@ end
 rule "The score is -10 and 25 minutes has been passed"
 lock-on-active true
     when
-        g : Game(minute>25,score>-10)
+    	g : Game
+        ge : GameEvent(minute>25,score>-10)
     then
     	g.setTactic("Transitional attack with better playing PG");	
         update( g );
@@ -437,7 +474,8 @@ end
 rule "Realisation of transitional attack with better playing PG-1"
 lock-on-active true
     when
-        g : Game(tactic=="Transitional attack with better playing PG"&&pg.pir<subsPg.pir&&subsPg.pir>pgSg.pir,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(tactic=="Transitional attack with better playing PG"&&pg.pir<subsPg.pir&&subsPg.pir>pgSg.pir,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -449,19 +487,21 @@ end
 rule "Realisation of transitional attack with better playing PG-2"
 lock-on-active true
     when
-        g : Game(tactic=="Napadi iz tranzicije sa dobrim pgom"&&pg.pir<pgSg.pir&&subsPg.pir<pgSg.pir,pgSg.hurt==false,pgSg.sentOff==false)
+   		ge : Game
+        g : GameEvent(tactic=="Napadi iz tranzicije sa dobrim pgom"&&pg.pir<pgSg.pir&&subsPg.pir<pgSg.pir,pgSg.hurt==false,pgSg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPgSg());
     	g.setPgSg(helpVariable);
-    	  	g.addExplanation("Current tactic is transitional attack with better playing PG, which means the emphazisis of a PG, so the solution is to substitue current PG with the PG/SG.");	
+    	g.addExplanation("Current tactic is transitional attack with better playing PG, which means the emphazisis of a PG, so the solution is to substitue current PG with the PG/SG.");	
         update( g );
 end
 
 rule "Last minute and the team hasn't furfilled the bonus-1Q"
 lock-on-active true
     when
-        g : Game(minute>8&&personalFoulsUntilBonus>2)
+    	g : Game
+        ge : GameEvent(minute>8&&personalFoulsUntilBonus>2)
     then
     	g.setTactic("Aggressive defense play");
         update( g );
@@ -470,7 +510,8 @@ end
 rule "Last minute and the team hasn't furfilled the bonus-2Q"
 lock-on-active true
     when
-        g : Game(minute>18&&personalFoulsUntilBonus>2)
+    	g : Game
+        ge : GameEvent(minute>18&&personalFoulsUntilBonus>2)
     then
     	g.setTactic("Aggressive defense play");
         update( g );
@@ -479,7 +520,8 @@ end
 rule "Last minute and the team hasn't furfilled the bonus-3Q"
 lock-on-active true
     when
-        g : Game(minute>28&&personalFoulsUntilBonus>2)
+    	g : Game
+        ge : GameEvent(minute>28&&personalFoulsUntilBonus>2)
     then
     	g.setTactic("Aggressive defense play");
         update( g );
@@ -488,7 +530,8 @@ end
 rule "Last minute and the team hasn't furfilled the bonus-4Q"
 lock-on-active true
     when
-        g : Game(minute>38&&personalFoulsUntilBonus>2)
+    	g : Game
+        ge : GameEvent(minute>38&&personalFoulsUntilBonus>2)
     then
     	g.setTactic("Aggressive defense play");
         update( g );
@@ -496,7 +539,8 @@ end
 rule "Realisation of aggresive play-1"
 lock-on-active true
     when
-        g : Game(tactic=="Aggressive defense play"&& minute>20 && sf.personalFouls>subsSf.personalFouls,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(tactic=="Aggressive defense play"&& minute>20 && sf.personalFouls>subsSf.personalFouls,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -508,7 +552,8 @@ end
 rule "Realisation of aggresive play-2"
 lock-on-active true
     when
-        g : Game(tactic=="Aggressive defense play" && minute>20 && sg.personalFouls>subsSg.personalFouls && subsSg.personalFouls < pgSg.personalFouls,subsSg.hurt==false,subsSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(tactic=="Aggressive defense play" && minute>20 && sg.personalFouls>subsSg.personalFouls && subsSg.personalFouls < pgSg.personalFouls,subsSg.hurt==false,subsSg.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSg());
@@ -520,7 +565,8 @@ end
 rule "Realisation of aggresive play-3"
 lock-on-active true
     when
-        g : Game(tactic=="Aggressive defense play" && minute>20 && sg.personalFouls>pgSg.personalFouls && subsSf.personalFouls > pgSg.personalFouls,pgSg.hurt==false,pgSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(tactic=="Aggressive defense play" && minute>20 && sg.personalFouls>pgSg.personalFouls && subsSf.personalFouls > pgSg.personalFouls,pgSg.hurt==false,pgSg.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getPgSg());
@@ -532,7 +578,8 @@ end
 rule "If the team is host the game is important"
 lock-on-active true
     when
-        g : Game(host==true)
+    	g : Game
+        ge : GameEvent(host==true)
     then
     	g.setImportanceOfGame(true);;	
         update( g );
@@ -541,7 +588,8 @@ end
 rule "If the game is important set the aggressive tactic"
 lock-on-active true
     when
-        g : Game(importanceOfGame==true)
+    	g : Game
+        ge : GameEvent(importanceOfGame==true)
     then
     	g.setTactic("Aggressive defense play");
         update( g );
@@ -550,7 +598,8 @@ end
 rule "Substitute hurted PG"
 lock-on-active true
     when
-        g : Game(pg.hurt==true,subsPg.hurt==false,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.hurt==true,subsPg.hurt==false,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -562,7 +611,8 @@ end
 rule "Substitute hurted SG"
 lock-on-active true
     when
-        g : Game(sg.hurt==true,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sg.hurt==true,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -574,7 +624,8 @@ end
 rule "Substitute hurted SF"
 lock-on-active true
     when
-        g : Game(sf.hurt==true,subsSf.hurt==false,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sf.hurt==true,subsSf.hurt==false,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -586,7 +637,8 @@ end
 rule "Substitute hurted PF"
 lock-on-active true
     when
-        g : Game(pf.hurt==true,subsPf.hurt==false,subsPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.hurt==true,subsPf.hurt==false,subsPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -598,7 +650,8 @@ end
 rule "Substitute hurted C"
 lock-on-active true
     when
-        g : Game(c.hurt==true,subsC.hurt==false,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.hurt==true,subsC.hurt==false,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -610,7 +663,8 @@ end
 rule "C sent off with 5 personal fouls"
 lock-on-active true
     when
-        g : Game(c.personalFouls==5)
+    	g : Game
+        ge : GameEvent(c.personalFouls==5)
     then
     	g.getC().setSentOff(true);
         update( g );
@@ -619,7 +673,8 @@ end
 rule "PF sent off with 5 personal fouls"
 lock-on-active true
     when
-        g : Game(pf.personalFouls==5)
+    	g : Game
+        ge : GameEvent(pf.personalFouls==5)
     then
     	g.getPf().setSentOff(true);
         update( g );
@@ -628,7 +683,8 @@ end
 rule "SF sent off with 5 personal fouls"
 lock-on-active true
     when
-        g : Game(sf.personalFouls==5)
+   		g : Game
+        ge : GameEvent(sf.personalFouls==5)
     then
     	g.getSf().setSentOff(true);
         update( g );
@@ -637,7 +693,8 @@ end
 rule "SG sent off with 5 personal fouls"
 lock-on-active true
     when
-        g : Game(sg.personalFouls==5)
+    	g : Game
+        ge : GameEvent(sg.personalFouls==5)
     then
     	g.getSg().setSentOff(true);
         update( g );
@@ -646,7 +703,8 @@ end
 rule "PG sent off with 5 personal fouls"
 lock-on-active true
     when
-        g : Game(pg.personalFouls==5)
+    	g : Game
+        ge : GameEvent(pg.personalFouls==5)
     then
     	g.getPg().setSentOff(true);
         update( g );
@@ -655,7 +713,8 @@ end
 rule "Substitute sent off PG"
 lock-on-active true
     when
-        g : Game(pg.sentOff==true,subsPg.sentOff==false)
+    	g : Game
+        ge : GameEvent(pg.sentOff==true,subsPg.sentOff==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -667,7 +726,8 @@ end
 rule "Substitute sent off SG"
 lock-on-active true
     when
-        g : Game(sg.sentOff==true,subsSg.sentOff==false)
+    	g : Game
+        ge : GameEvent(sg.sentOff==true,subsSg.sentOff==false)
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSg());
@@ -680,7 +740,8 @@ end
 rule "Substitute sent off SF"
 lock-on-active true
     when
-        g : Game(sf.sentOff==true,subsSf.sentOff==false)
+    	g : Game
+        ge : GameEvent(sf.sentOff==true,subsSf.sentOff==false)
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -693,7 +754,8 @@ end
 rule "Substitute sent off PF"
 lock-on-active true
     when
-        g : Game(pf.sentOff==true,subsPf.sentOff==false)
+    	g : Game
+        ge : GameEvent(pf.sentOff==true,subsPf.sentOff==false)
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -705,7 +767,8 @@ end
 rule "Substitute sent off C"
 lock-on-active true
     when
-        g : Game(c.sentOff==true,subsC.sentOff==false)
+    	g : Game
+        ge : GameEvent(c.sentOff==true,subsC.sentOff==false)
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -717,7 +780,8 @@ end
 rule "Finish of the game and score difference is small-1"
 lock-on-active true
     when
-        g : Game(minute>39.5 && score < 3 && score > -3 && pg.averagePercentageOnePoint<subsPg.averagePercentageOnePoint && subsPg.averagePercentageOnePoint>pgSg.averagePercentageOnePoint && subsPg.sentOff==false && subsPg.hurt==false)
+    	g : Game
+        ge : GameEvent(minute>39.5 && score < 3 && score > -3 && pg.averagePercentageOnePoint<subsPg.averagePercentageOnePoint && subsPg.averagePercentageOnePoint>pgSg.averagePercentageOnePoint && subsPg.sentOff==false && subsPg.hurt==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -729,7 +793,8 @@ end
 rule "Finish of the game and score difference is small-2"
 lock-on-active true
     when
-        g : Game(minute>39.5,pg.averagePercentageOnePoint<pgSg.averagePercentageOnePoint,subsPg.averagePercentageOnePoint<pgSg.averagePercentageOnePoint,pgSg.sentOff==false,pgSg.hurt==false)
+    	g : Game
+        ge : GameEvent(minute>39.5,pg.averagePercentageOnePoint<pgSg.averagePercentageOnePoint,subsPg.averagePercentageOnePoint<pgSg.averagePercentageOnePoint,pgSg.sentOff==false,pgSg.hurt==false)
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPgSg());

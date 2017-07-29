@@ -1,6 +1,6 @@
 package org.silab.expertsystem.model;
 
-public class Game {
+public class GameEvent {
 
 	Player pg;
 	Player sg;
@@ -14,12 +14,14 @@ public class Game {
 	Player subsC;
 	Player cPf;
 	Player pgSg;
-	
 	StringBuffer explanation = new StringBuffer();
-	String qualityOfOpponent;
-	boolean host;
-	boolean importanceOfGame;
-	
+
+	long score;
+	double minute;
+	String tactic;
+	long personalFoulsUntilBonus;
+	boolean ball;
+
 	Player opponentPg;
 	Player opponentSg;
 	Player opponentSf;
@@ -32,178 +34,238 @@ public class Game {
 	Player opponentSubsC;
 	Player opponentSubsCPf;
 	Player opponentsSubsPgSg;
-	
-	
-	
-	public String getQualityOfOpponent() {
-		return qualityOfOpponent;
-	}
-	public void setQualityOfOpponent(String qualityOfOpponent) {
-		this.qualityOfOpponent = qualityOfOpponent;
-	}
-	public boolean isHost() {
-		return host;
-	}
-	public void setHost(boolean host) {
-		this.host = host;
-	}
-	public boolean isImportanceOfGame() {
-		return importanceOfGame;
-	}
-	public void setImportanceOfGame(boolean importanceOfGame) {
-		this.importanceOfGame = importanceOfGame;
-	}
+
 	public Player getPg() {
 		return pg;
 	}
+
 	public void setPg(Player pg) {
 		this.pg = pg;
 	}
+
 	public Player getSg() {
 		return sg;
 	}
+
 	public void setSg(Player sg) {
 		this.sg = sg;
 	}
+
 	public Player getSf() {
 		return sf;
 	}
+
 	public void setSf(Player sf) {
 		this.sf = sf;
 	}
+
 	public Player getPf() {
 		return pf;
 	}
+
 	public void setPf(Player pf) {
 		this.pf = pf;
 	}
+
 	public Player getC() {
 		return c;
 	}
+
 	public void setC(Player c) {
 		this.c = c;
 	}
+
 	public Player getSubsPg() {
 		return subsPg;
 	}
+
 	public void setSubsPg(Player subsPg) {
 		this.subsPg = subsPg;
 	}
+
 	public Player getSubsSg() {
 		return subsSg;
 	}
+
 	public void setSubsSg(Player subsSg) {
 		this.subsSg = subsSg;
 	}
+
 	public Player getSubsSf() {
 		return subsSf;
 	}
+
 	public void setSubsSf(Player subsSf) {
 		this.subsSf = subsSf;
 	}
+
 	public Player getSubsPf() {
 		return subsPf;
 	}
+
 	public void setSubsPf(Player subsPf) {
 		this.subsPf = subsPf;
 	}
+
 	public Player getSubsC() {
 		return subsC;
 	}
+
 	public void setSubsC(Player subsC) {
 		this.subsC = subsC;
 	}
+
 	public Player getcPf() {
 		return cPf;
 	}
+
 	public void setcPf(Player cPf) {
 		this.cPf = cPf;
 	}
+
 	public Player getPgSg() {
 		return pgSg;
 	}
+
 	public void setPgSg(Player pgSg) {
 		this.pgSg = pgSg;
 	}
-	public StringBuffer getExplanation() {
-		return explanation;
+
+	public long getScore() {
+		return score;
 	}
 
-	public void addExplanation(String explanation) {
-		this.explanation.append(explanation);
+	public void setScore(long score) {
+		this.score = score;
 	}
-	public Player getOpponentPg() {
+
+	public double getMinute() {
+		return minute;
+	}
+
+	public void setMinute(double minute) {
+		this.minute = minute;
+	}
+
+	public String getTactic() {
+		return tactic;
+	}
+
+	public void setTactic(String tactic) {
+		this.tactic = tactic;
+	}
+
+	public long getPersonalFoulsUntilBonus() {
+		return personalFoulsUntilBonus;
+	}
+
+	public void setPersonalFoulsUntilBonus(long personalFoulsUntilBonus) {
+		this.personalFoulsUntilBonus = personalFoulsUntilBonus;
+	}
+
+
+	public boolean isBall() {
+		return ball;
+	}
+
+	public void setBall(boolean ball) {
+		this.ball = ball;
+	}
+
+	public Player getopponentPg() {
 		return opponentPg;
 	}
-	public void setOpponentPg(Player opponentPg) {
+
+	public void setopponentPg(Player opponentPg) {
 		this.opponentPg = opponentPg;
 	}
-	public Player getOpponentSg() {
+
+	public Player getopponentSg() {
 		return opponentSg;
 	}
-	public void setOpponentSg(Player opponentSg) {
+
+	public void setopponentSg(Player opponentSg) {
 		this.opponentSg = opponentSg;
 	}
-	public Player getOpponentSf() {
+
+	public Player getopponentSf() {
 		return opponentSf;
 	}
-	public void setOpponentSf(Player opponentSf) {
+
+	public void setopponentSf(Player opponentSf) {
 		this.opponentSf = opponentSf;
 	}
-	public Player getOpponentPf() {
+
+	public Player getopponentPf() {
 		return opponentPf;
 	}
-	public void setOpponentPf(Player opponentPf) {
+
+	public void setopponentPf(Player opponentPf) {
 		this.opponentPf = opponentPf;
 	}
-	public Player getOpponentC() {
+
+	public Player getopponentC() {
 		return opponentC;
 	}
-	public void setOpponentC(Player opponentC) {
+
+	public void setopponentC(Player opponentC) {
 		this.opponentC = opponentC;
 	}
-	public Player getOpponentSubsPg() {
+
+	public Player getopponentSubsPg() {
 		return opponentSubsPg;
 	}
-	public void setOpponentSubsPg(Player opponentSubsPg) {
+
+	public void setopponentSubsPg(Player opponentSubsPg) {
 		this.opponentSubsPg = opponentSubsPg;
 	}
-	public Player getOpponentsSubsSg() {
+
+	public Player getopponentsSubsSg() {
 		return opponentsSubsSg;
 	}
-	public void setOpponentsSubsSg(Player opponentsSubsSg) {
+
+	public void setopponentsSubsSg(Player opponentsSubsSg) {
 		this.opponentsSubsSg = opponentsSubsSg;
 	}
-	public Player getOpponentSubsSf() {
+
+	public Player getopponentSubsSf() {
 		return opponentSubsSf;
 	}
-	public void setOpponentSubsSf(Player opponentSubsSf) {
+
+	public void setopponentSubsSf(Player opponentSubsSf) {
 		this.opponentSubsSf = opponentSubsSf;
 	}
-	public Player getOpponentSubsPf() {
+
+	public Player getopponentSubsPf() {
 		return opponentSubsPf;
 	}
-	public void setOpponentSubsPf(Player opponentSubsPf) {
+
+	public void setopponentSubsPf(Player opponentSubsPf) {
 		this.opponentSubsPf = opponentSubsPf;
 	}
-	public Player getOpponentSubsC() {
+
+	public Player getopponentSubsC() {
 		return opponentSubsC;
 	}
-	public void setOpponentSubsC(Player opponentSubsC) {
+
+	public void setopponentSubsC(Player opponentSubsC) {
 		this.opponentSubsC = opponentSubsC;
 	}
-	public Player getOpponentSubsCPf() {
+
+	public Player getopponentSubsCPf() {
 		return opponentSubsCPf;
 	}
-	public void setOpponentSubsCPf(Player opponentSubsCPf) {
+
+	public void setopponentSubsCPf(Player opponentSubsCPf) {
 		this.opponentSubsCPf = opponentSubsCPf;
 	}
-	public Player getOpponentsSubsPgSg() {
+
+	public Player getopponentsSubsPgSg() {
 		return opponentsSubsPgSg;
 	}
-	public void setOpponentsSubsPgSg(Player opponentsSubsPgSg) {
+
+	public void setopponentsSubsPgSg(Player opponentsSubsPgSg) {
 		this.opponentsSubsPgSg = opponentsSubsPgSg;
 	}
-	
-	
+
 }
