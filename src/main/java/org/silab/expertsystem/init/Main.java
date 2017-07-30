@@ -7,18 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.kie.api.KieBase;
-import org.kie.api.KieBaseConfiguration;
-import org.kie.api.KieServices;
-import org.kie.api.conf.EventProcessingOption;
-import org.kie.api.runtime.KieContainer;
-import org.kie.api.runtime.KieSession;
-import org.kie.api.runtime.KieSessionConfiguration;
-import org.kie.api.runtime.conf.ClockTypeOption;
 import org.silab.expertsystem.consumer.StatsMessageConsumer;
 import org.silab.expertsystem.db.broker.DBSession;
 import org.silab.expertsystem.db.broker.MongoDBSession;
@@ -77,14 +65,14 @@ public class Main {
 		game.setHost(true);
 		game.setQualityOfOpponent("excellent");
 		
-		ks.kieInit(game);
+		ks.kieInit();
 		
 		Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"),ks,game));
 		thread.start();
 		
 		
+		
 		while(true){
-			//System.out.println(game.getopponentPf().getName());
 		}
 		
 	}

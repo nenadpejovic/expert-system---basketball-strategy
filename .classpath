@@ -2,11 +2,32 @@
 <classpath>
 	<classpathentry kind="src" path="src/main/java"/>
 	<classpathentry kind="src" path="src/main/rules"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="DROOLS/Drools"/>
 	<classpathentry kind="lib" path="C:/Users/pc/Downloads/activemq-all-5.14.5.jar"/>
 	<classpathentry kind="lib" path="C:/Users/pc/Downloads/mongo-java-driver-3.4.2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/pc/Downloads/json-simple-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/pc/Downloads/kie-api-7.0.0.Final.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/antlr-runtime.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/drools-compiler.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/drools-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/drools-decisiontables.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/drools-jsr94.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/drools-templates.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/jbpm-bpmn2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/jbpm-flow.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/jbpm-flow-builder.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/jsr94.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/kie-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/kie-internal.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/mvel2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/org.eclipse.jdt.core_3.9.2.v20140114-1555.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/poi.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/poi-ooxml.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/protobuf-java.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/xmlpull.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/xpp3_min.jar"/>
+	<classpathentry kind="lib" path="C:/Users/pc/Desktop/kepler_drools_runtime/xstream.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
