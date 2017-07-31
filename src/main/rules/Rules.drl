@@ -13,20 +13,146 @@ end
 
 
 
-rule "Test"
+rule "Opponent C scores to many points"
 lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent(score > 10)
-		ge2 : GameEvent(score < 6, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(score < 6, this.opponentC.points >= ge1.opponentC.points+4, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then 
-		System.out.println("e moj sasa");
-		Player help = g.getSf();
-		g.setSf(g.getSubsSf());
-		g.setSubsSf(help);
+		Player help = g.getC();
+		g.setC(g.getSubsC());
+		g.setSubsC(help);
+		g.addExplanation("Recently, many points are scored by opponents C, so the solution is to substitute current C with the backup C to improve defense.");
 		update(g);			
 end
 
+rule "Opponent PG scores to many points"
+lock-on-active true
+	when 
+		g  : Game()
+		ge1 : GameEvent(score > 10)
+		ge2 : GameEvent(score < 6, this.opponentPg.points >= ge1.opponentPg.points+4, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then 
+		Player help = g.getPg();
+		g.setPg(g.getSubsPg());
+		g.setPg(help);
+		g.addExplanation("Recently, many points are scored by opponents PG, so the solution is to substitute current PG with the backup PG to improve defense.");
+		update(g);			
+end
+
+rule "PG has problems with personal fouls"
+lock-on-active true
+	when
+		g : Game()
+		ge1: GameEvent()
+		ge2 : GameEvent(this.pg.personalFouls >= ge1.pg.perosnalFouls+2, subsPg.hurt == false, subsPg.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then
+		Player help = g.getPg();
+		g.setPg(g.getSubsPg());
+		g.setPg(help);
+		g.addExplanation("Recently, PG is commiting to many fouls, so the solution is to substitute current PG with the backup PG.");
+		update(g);	
+	end
+
+rule "SG has problems with personal fouls"
+lock-on-active true
+	when
+		g : Game()
+		ge1: GameEvent()
+		ge2 : GameEvent(this.sg.personalFouls >= ge1.sg.perosnalFouls+2, subsSg.hurt == false, subsSg.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then
+		Player help = g.getSg();
+		g.setPg(g.getSubsSg());
+		g.setSg(help);
+		g.addExplanation("Recently, SG is commiting to many fouls, so the solution is to substitute current SG with the backup SG.");
+		update(g);	
+	end	
+
+rule "SF has problems with personal fouls"
+lock-on-active true
+	when
+		g : Game()
+		ge1: GameEvent()
+		ge2 : GameEvent(this.sf.personalFouls >= ge1.sf.perosnalFouls+2, subsSf.hurt == false, subsSf.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then
+		Player help = g.getSf();
+		g.setSf(g.getSubsSf());
+		g.setSf(help);
+		g.addExplanation("Recently, SF is commiting to many fouls, so the solution is to substitute current SF with the backup SF.");
+		update(g);	
+	end
+	
+rule "PF has problems with personal fouls"
+lock-on-active true
+	when
+		g : Game()
+		ge1: GameEvent()
+		ge2 : GameEvent(this.pf.personalFouls >= ge1.pf.perosnalFouls+2, subsPf.hurt == false, subsPf.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then
+		Player help = g.getPf();
+		g.setPf(g.getSubsPf());
+		g.setPf(help);
+		g.addExplanation("Recently, PF is commiting to many fouls, so the solution is to substitute current PF with the backup PF.");
+		update(g);	
+	end	
+	
+rule "C has problems with personal fouls"
+lock-on-active true
+	when
+		g : Game()
+		ge1: GameEvent()
+		ge2 : GameEvent(this.c.personalFouls >= ge1.c.perosnalFouls+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then
+		Player help = g.getC();
+		g.setC(g.getSubsC());
+		g.setC(help);
+		g.addExplanation("Recently, C is commiting to many fouls, so the solution is to substitute current C with the backup C.");
+		update(g);	
+	end	
+
+rule "Opponent C is dominate under the basket"
+lock-on-active true
+	when
+		g : Game()
+		ge1: GameEvent()
+		ge2 : GameEvent(this.opponentC.rebounds >= ge1.opponentC.rebounds+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then
+		Player help = g.getC();
+		g.setC(g.getSubsC());
+		g.setC(help);
+		g.addExplanation("Recently, opponet C grabs to many rebounds, so the solution is to substitute current C with the backup C.");
+		update(g);	
+	end	
+	
+rule "Opponent PG makes to many assists"
+lock-on-active true
+	when 
+		g  : Game()
+		ge1 : GameEvent()
+		ge2 : GameEvent(this.opponentPg.assists >= ge1.opponentPg.assists+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then 
+		Player help = g.getPg();
+		g.setPg(g.getSubsPg());
+		g.setPg(help);
+		g.addExplanation("Recently, opponents PG is making to many assists, so the solution is to substitute current PG with the backup PG to improve defense.");
+		update(g);			
+end	
+
+rule "Opponent PG commits to many steals"
+lock-on-active true
+	when 
+		g  : Game()
+		ge1 : GameEvent()
+		ge2 : GameEvent(this.opponentPg.steals >= ge1.opponentPg.steals+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+	then 
+		Player help = g.getPg();
+		g.setPg(g.getSubsPg());
+		g.setPg(help);
+		g.addExplanation("Recently, opponents PG is commitins to many steals, so the solution is to substitute current PG with the backup PG to improve offense.");
+		update(g);			
+end	
+	
 rule "Bad start of a PG"
 lock-on-active true
     when
