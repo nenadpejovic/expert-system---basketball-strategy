@@ -20,6 +20,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.silab.expertsystem.config.gui.MainGUI;
 import org.silab.expertsystem.kie.KieService;
 import org.silab.expertsystem.model.Game;
 import org.silab.expertsystem.model.GameEvent;
@@ -34,14 +35,16 @@ public class StatsMessageConsumer implements Runnable {
 	Game g;
 	List<Player> setted;
 	KieService ks;
+	MainGUI gui;
 
-	public StatsMessageConsumer(List<Player> players, String url, String queueName, KieService ks, Game game) {
+	public StatsMessageConsumer(List<Player> players, String url, String queueName, KieService ks, Game game, MainGUI gui) {
 		this.g = game;
 		this.players = players;
 		this.url = url;
 		this.queueName = queueName;
 		this.setted = new LinkedList<>();
 		this.ks = ks;
+		this.gui = gui;
 	}
 
 	@Override

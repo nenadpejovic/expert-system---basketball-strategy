@@ -50,7 +50,7 @@ public class KieService {
 	        kieServices.newKieContainer( kieServices.getRepository().getDefaultReleaseId() );
 	    KieBaseConfiguration kieConf = kieServices.newKieBaseConfiguration();
 	    
-	    //kieConf.setOption(EventProcessingOption.STREAM);
+	    kieConf.setOption(EventProcessingOption.STREAM);
 	    
 	    KieBase kieBase = kieContainer.newKieBase(kieConf);
 	    KieSessionConfiguration sessionConf = kieServices.newKieSessionConfiguration();

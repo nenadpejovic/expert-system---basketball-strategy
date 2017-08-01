@@ -13,7 +13,7 @@ end
 
 
 
-rule "Opponent C scores to many points"
+/*rule "Opponent C scores to many points"
 lock-on-active true
 	when 
 		g  : Game()
@@ -164,7 +164,7 @@ lock-on-active true
     	g.setPg(helpVariable);	
     	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of PG is less than 1, so the best solution is to substite current PG with the backup PG.");
         update( g );
-end
+end */
 
 rule "Bad start of a SG"
 lock-on-active true

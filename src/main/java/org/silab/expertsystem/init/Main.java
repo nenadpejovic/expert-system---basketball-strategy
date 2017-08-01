@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javafx.application.Application;
+
+import org.silab.expertsystem.config.gui.MainGUI;
 import org.silab.expertsystem.consumer.StatsMessageConsumer;
 import org.silab.expertsystem.db.broker.DBSession;
 import org.silab.expertsystem.db.broker.MongoDBSession;
@@ -19,15 +22,12 @@ import org.silab.expertsystem.model.Game;
 import org.silab.expertsystem.model.GameEvent;
 import org.silab.expertsystem.model.Player;
 
+import sun.launcher.resources.launcher;
+
 public class Main {
 
 
 	public static void main(String[] args) {
-		
-		  
-		
-
-	      
 		
 	
 		Properties props = new Properties();
@@ -65,10 +65,13 @@ public class Main {
 		game.setHost(true);
 		game.setQualityOfOpponent("excellent");
 		
-		ks.kieInit();
+		//ks.kieInit();
 		
-		Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"),ks,game));
-		thread.start();
+		MainGUI gui = new MainGUI();
+		gui.startApp(args);
+		
+		//Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"),ks,game,gui));
+		//thread.start();
 		
 		
 		
