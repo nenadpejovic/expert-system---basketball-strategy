@@ -17,6 +17,7 @@ import org.kie.api.runtime.KieSession;
 import org.kie.api.runtime.KieSessionConfiguration;
 import org.kie.api.runtime.rule.EntryPoint;
 import org.kie.internal.KnowledgeBaseFactory;
+import org.silab.expertsystem.config.gui.MainGUI;
 import org.silab.expertsystem.model.Game;
 import org.silab.expertsystem.model.GameEvent;
 
@@ -70,11 +71,13 @@ public class KieService {
 	}
 	
 
-   public void injectEvent(Game game,GameEvent gameEvent){
+   public void injectEvent(Game game,GameEvent gameEvent,MainGUI gui){
 
 	   kieSession.insert(game);
 	   entryPoint.insert(gameEvent);
 	   kieSession.fireAllRules();
+	   
+	   gui.initLineup(game);
 	   
 	   System.out.println("------------------"+game.getSubsSf().getSurname()+"----------------------");
    }

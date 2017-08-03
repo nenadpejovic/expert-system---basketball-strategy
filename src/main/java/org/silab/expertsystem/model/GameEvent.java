@@ -1,11 +1,18 @@
 package org.silab.expertsystem.model;
 
+import org.silab.expertsystem.config.annotations.LabelId;
+
 public class GameEvent {
 
+	@LabelId(id="spg")
 	Player pg;
+	@LabelId(id="ssg")
 	Player sg;
+	@LabelId(id="ssf")
 	Player sf;
+	@LabelId(id="spf")
 	Player pf;
+	@LabelId(id="sc")
 	Player c;
 	Player subsPg;
 	Player subsSg;

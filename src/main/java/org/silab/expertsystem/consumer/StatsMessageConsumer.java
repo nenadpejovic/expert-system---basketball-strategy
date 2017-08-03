@@ -69,8 +69,8 @@ public class StatsMessageConsumer implements Runnable {
 							TextMessage textMessage = (TextMessage) message;
 							game = new GameEvent();
 							populateGame(textMessage);
-							
-							ks.injectEvent(g,game);
+							gui.initLineup(game);
+							ks.injectEvent(g,game,gui);
 						}
 					} catch (JMSException e) {
 						System.out.println("Caught:" + e);
