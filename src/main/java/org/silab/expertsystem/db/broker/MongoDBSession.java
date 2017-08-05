@@ -8,15 +8,7 @@ import java.util.Map;
 
 import org.bson.Document;
 import org.silab.expertsystem.config.annotations.ModelTable;
-import org.silab.expertsystem.db.datasource.DataSource;
-import org.silab.expertsystem.model.Player;
 
-import com.mongodb.DB;
-import com.mongodb.DBCollection;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
-import com.mongodb.MongoClient;
-import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;

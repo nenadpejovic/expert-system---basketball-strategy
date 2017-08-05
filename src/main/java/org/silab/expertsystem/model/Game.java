@@ -6,13 +6,13 @@ public class Game {
 
 	@LabelId(id="ppg")
 	Player pg;
-	@LabelId(id="ssg")
+	@LabelId(id="psg")
 	Player sg;
-	@LabelId(id="ssf")
+	@LabelId(id="psf")
 	Player sf;
-	@LabelId(id="spf")
+	@LabelId(id="ppf")
 	Player pf;
-	@LabelId(id="sc")
+	@LabelId(id="pc")
 	Player c;
 	Player subsPg;
 	Player subsSg;
@@ -22,6 +22,7 @@ public class Game {
 	Player cPf;
 	Player pgSg;
 	
+	@LabelId(id="ex")
 	StringBuffer explanation = new StringBuffer();
 	String qualityOfOpponent;
 	boolean host;

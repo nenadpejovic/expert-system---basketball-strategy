@@ -4,6 +4,8 @@ package org.silab.expertsystem.kie;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
+import javafx.application.Platform;
+
 import org.kie.api.KieBase;
 import org.kie.api.KieBaseConfiguration;
 import org.kie.api.KieServices;
@@ -71,13 +73,21 @@ public class KieService {
 	}
 	
 
-   public void injectEvent(Game game,GameEvent gameEvent,MainGUI gui){
+   public void injectEvent(final Game game,GameEvent gameEvent,final MainGUI gui){
 
 	   kieSession.insert(game);
 	   entryPoint.insert(gameEvent);
 	   kieSession.fireAllRules();
 	   
-	   gui.initLineup(game);
+	   System.out.println(game.getExplanation());
+	   
+	   Platform.runLater(new Runnable() {
+		
+		@Override
+		public void run() {
+			gui.initLineup(game);
+		}
+	   });
 	   
 	   System.out.println("------------------"+game.getSubsSf().getSurname()+"----------------------");
    }

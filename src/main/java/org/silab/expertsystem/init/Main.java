@@ -65,13 +65,21 @@ public class Main {
 		game.setHost(true);
 		game.setQualityOfOpponent("excellent");
 		
-		//ks.kieInit();
+		ks.kieInit();
 		
-		MainGUI gui = new MainGUI();
-		gui.startApp(args);
 		
-		//Thread thread = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"),ks,game,gui));
-		//thread.start();
+		new Thread(){
+			@Override
+			public void run() {
+				Application.launch(MainGUI.class);
+			};
+		}.start();
+		
+		MainGUI gui = MainGUI.waitStartUp();
+		
+		
+		Thread threadListener = new Thread(new StatsMessageConsumer(players,props.getProperty("activemq-url"),props.getProperty("queue-name"),ks,game,gui));
+		threadListener.start();
 		
 		
 		

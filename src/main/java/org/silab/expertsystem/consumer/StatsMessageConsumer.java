@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import javafx.application.Platform;
+
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
@@ -35,7 +37,7 @@ public class StatsMessageConsumer implements Runnable {
 	Game g;
 	List<Player> setted;
 	KieService ks;
-	MainGUI gui;
+	private MainGUI gui;
 
 	public StatsMessageConsumer(List<Player> players, String url, String queueName, KieService ks, Game game, MainGUI gui) {
 		this.g = game;
@@ -50,6 +52,7 @@ public class StatsMessageConsumer implements Runnable {
 	@Override
 	public void run() {
 		try {
+			
 			ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(url);
 			Connection connection = connectionFactory.createConnection();
 			connection.start();
@@ -66,10 +69,17 @@ public class StatsMessageConsumer implements Runnable {
 				public void onMessage(Message message) {
 					try {
 						if (message instanceof TextMessage) {
+							g.getExplanation().delete(0, g.getExplanation().length());
 							TextMessage textMessage = (TextMessage) message;
 							game = new GameEvent();
 							populateGame(textMessage);
-							gui.initLineup(game);
+							Platform.runLater(new Runnable() {
+								
+								@Override
+								public void run() {
+									gui.initLineup(game);;
+								}
+							});
 							ks.injectEvent(g,game,gui);
 						}
 					} catch (JMSException e) {

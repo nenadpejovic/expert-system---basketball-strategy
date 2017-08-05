@@ -11,14 +11,13 @@ declare GameEvent
 	@expires(5m)
 end
 
-
-
-/*rule "Opponent C scores to many points"
+			
+rule "Opponent C scores to many points"
 lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent(score > 10)
-		ge2 : GameEvent(score < 6, this.opponentC.points >= ge1.opponentC.points+4, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(score < 6, this.opponentC.points > ge1.opponentC.points+4, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then 
 		Player help = g.getC();
 		g.setC(g.getSubsC());
@@ -32,7 +31,7 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent(score > 10)
-		ge2 : GameEvent(score < 6, this.opponentPg.points >= ge1.opponentPg.points+4, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(score < 6, this.opponentPg.points > ge1.opponentPg.points+4, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then 
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
@@ -46,7 +45,7 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.pg.personalFouls >= ge1.pg.perosnalFouls+2, subsPg.hurt == false, subsPg.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.pg.personalFouls > ge1.pg.personalFouls+2, subsPg.hurt == false, subsPg.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
@@ -60,7 +59,7 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.sg.personalFouls >= ge1.sg.perosnalFouls+2, subsSg.hurt == false, subsSg.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.sg.personalFouls > ge1.sg.personalFouls+2, subsSg.hurt == false, subsSg.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then
 		Player help = g.getSg();
 		g.setPg(g.getSubsSg());
@@ -74,7 +73,7 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.sf.personalFouls >= ge1.sf.perosnalFouls+2, subsSf.hurt == false, subsSf.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.sf.personalFouls > ge1.sf.personalFouls+2, subsSf.hurt == false, subsSf.sentOff == false, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then
 		Player help = g.getSf();
 		g.setSf(g.getSubsSf());
@@ -88,7 +87,7 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.pf.personalFouls >= ge1.pf.perosnalFouls+2, subsPf.hurt == false, subsPf.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.pf.personalFouls > ge1.pf.personalFouls+2, subsPf.hurt == false, subsPf.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then
 		Player help = g.getPf();
 		g.setPf(g.getSubsPf());
@@ -102,7 +101,7 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.c.personalFouls >= ge1.c.perosnalFouls+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.c.personalFouls > ge1.c.personalFouls+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then
 		Player help = g.getC();
 		g.setC(g.getSubsC());
@@ -116,7 +115,7 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.opponentC.rebounds >= ge1.opponentC.rebounds+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.opponentC.rebounds > ge1.opponentC.rebounds+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then
 		Player help = g.getC();
 		g.setC(g.getSubsC());
@@ -130,7 +129,7 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent()
-		ge2 : GameEvent(this.opponentPg.assists >= ge1.opponentPg.assists+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.opponentPg.assists > ge1.opponentPg.assists+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then 
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
@@ -144,14 +143,14 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent()
-		ge2 : GameEvent(this.opponentPg.steals >= ge1.opponentPg.steals+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
+		ge2 : GameEvent(this.opponentPg.steals > ge1.opponentPg.steals+2, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) from entry-point DEFAULT
 	then 
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
 		g.setPg(help);
 		g.addExplanation("Recently, opponents PG is commitins to many steals, so the solution is to substitute current PG with the backup PG to improve offense.");
 		update(g);			
-end	
+end	 
 	
 rule "Bad start of a PG"
 lock-on-active true
@@ -164,7 +163,7 @@ lock-on-active true
     	g.setPg(helpVariable);	
     	g.addExplanation("Less than two minutes have been passed, the team is losing with more then 7 points and pir of PG is less than 1, so the best solution is to substite current PG with the backup PG.");
         update( g );
-end */
+end 
 
 rule "Bad start of a SG"
 lock-on-active true
@@ -403,7 +402,7 @@ rule "Issue with personal fouls of a PG and less number of personal fouls of a b
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(pg.personalFouls >= 3,subsPg.personalFouls < 3 && minute > 20,subsPg.hurt==false,subsPg.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(pg.personalFouls > 3,subsPg.personalFouls < 3 && minute > 20,subsPg.hurt==false,subsPg.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -416,7 +415,7 @@ rule "Issue with personal fouls of a PG and less number of personal fouls of a P
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(pg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(pg.personalFouls > 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPgSg());
@@ -429,7 +428,7 @@ rule "Issue with personal fouls of a SG and less number of personal fouls of a b
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(sg.personalFouls >= 3,subsSg.personalFouls < 3 && minute > 20,subsSg.hurt==false,subsSg.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(sg.personalFouls > 3,subsSg.personalFouls < 3 && minute > 20,subsSg.hurt==false,subsSg.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSg());
@@ -442,7 +441,7 @@ rule "Issue with personal fouls of a SG and less number of personal fouls of a P
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(sg.personalFouls >= 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(sg.personalFouls > 3,pgSg.personalFouls < 3 && minute > 20,pgSg.hurt==false,pgSg.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getPgSg());
@@ -455,7 +454,7 @@ rule "Issue with personal fouls of a SF and less number of personal fouls of a b
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(sf.personalFouls >= 3,subsSf.personalFouls < 3 && minute > 20,subsSf.hurt==false,subsSf.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(sf.personalFouls > 3,subsSf.personalFouls < 3 && minute > 20,subsSf.hurt==false,subsSf.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -468,7 +467,7 @@ rule "Issue with personal fouls of a PF and less number of personal fouls of a b
 lock-on-active true	
     when
     	g : Game()
-        ge : GameEvent(pf.personalFouls >= 3,subsPf.personalFouls < 3 && minute > 20,subsPf.hurt==false,subsPf.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(pf.personalFouls > 3,subsPf.personalFouls < 3 && minute > 20,subsPf.hurt==false,subsPf.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -481,7 +480,7 @@ rule "Issue with personal fouls of a PF and less number of personal fouls of a P
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(pf.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(pf.personalFouls > 3,cPf.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getcPf());
@@ -494,7 +493,7 @@ rule "Issue with personal fouls of a C and less number of personal fouls of a ba
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(c.personalFouls >= 3,subsC.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(c.personalFouls > 3,subsC.personalFouls < 3 && minute > 20,subsC.hurt==false,subsC.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -507,7 +506,7 @@ rule "Issue with personal fouls of a C and less number of personal fouls of a PF
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(c.personalFouls >= 3,cPf.personalFouls < 3 && minute > 20,cPf.hurt==false,cPf.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent(c.personalFouls > 3,cPf.personalFouls < 3 && minute > 20,cPf.hurt==false,cPf.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getcPf());
@@ -533,7 +532,7 @@ rule "Last seconds before the end of a quarter and in the game is tall C."
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&c.position=="C"&&cPf.position=="PC/C",cPf.hurt==false,cPf.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent((minute>9.7 || minute>19.7 || minute>29.7 || minute>39.7)&&c.position=="C"&&cPf.position=="PC/C",cPf.hurt==false,cPf.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getcPf());
@@ -546,7 +545,7 @@ rule "Last seconds before the end of a quarter and in the game is worse SG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&sg.averagePercentageThreePoints<subsSf.averagePercentageThreePoints,subsSf.hurt==false,subsSf.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent((minute>9.7 || minute>19.7 || minute>29.7 || minute>39.7)&&sg.averagePercentageThreePoints<subsSf.averagePercentageThreePoints,subsSf.hurt==false,subsSf.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -559,7 +558,7 @@ rule "Last seconds before the end of a quarter and in the game is worse shooting
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent((minute>=9.7 || minute>=19.7 || minute>=29.7 || minute>=39.7)&&pg.averagePercentageThreePoints<subsPg.averagePercentageThreePoints,subsPg.hurt==false,subsPg.sentOff==false) over window:time(30s) from entry-point DEFAULT
+        ge : GameEvent((minute>9.7 || minute>19.7 || minute>29.7 || minute>39.7)&&pg.averagePercentageThreePoints<subsPg.averagePercentageThreePoints,subsPg.hurt==false,subsPg.sentOff==false) over window:time(30s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());

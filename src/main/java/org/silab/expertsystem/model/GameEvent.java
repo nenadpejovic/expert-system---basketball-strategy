@@ -4,15 +4,15 @@ import org.silab.expertsystem.config.annotations.LabelId;
 
 public class GameEvent {
 
-	@LabelId(id="spg")
+	@LabelId(id="cpg")
 	Player pg;
-	@LabelId(id="ssg")
+	@LabelId(id="csg")
 	Player sg;
-	@LabelId(id="ssf")
+	@LabelId(id="csf")
 	Player sf;
-	@LabelId(id="spf")
+	@LabelId(id="cpf")
 	Player pf;
-	@LabelId(id="sc")
+	@LabelId(id="cc")
 	Player c;
 	Player subsPg;
 	Player subsSg;
