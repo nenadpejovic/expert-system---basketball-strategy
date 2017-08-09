@@ -184,7 +184,7 @@ public class MainGUI extends Application {
 
 		Scene scene1 = primaryStage.getScene();
 
-		primaryStage.setResizable(false);
+//		primaryStage.setResizable(false);
 
 		// Displaying the contents of the stage
 		primaryStage.show();
