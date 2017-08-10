@@ -8,7 +8,7 @@ import org.silab.expertsystem.model.Game
 
 declare GameEvent
 	@role( event )
-	@expires(5m)
+	@expires(1m30s)
 end
 		
 rule "Opponent C scores to many points"
@@ -16,7 +16,7 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent(score > 10)
-		ge2 : GameEvent(score < 6, this.opponentC.points > ge1.opponentC.points+4, this.opponentC == ge1.opponentC, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(score < 6, this.opponentC.name==this.opponentC.name,this.opponentC.surname==this.opponentC.surname, this.opponentC.points > ge1.opponentC.points+4, this.opponentC == ge1.opponentC, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then 
 		Player help = g.getC();
 		g.setC(g.getSubsC());
@@ -30,11 +30,11 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent(score > 10)
-		ge2 : GameEvent(score < 6, this.opponentPg.points > ge1.opponentPg.points+4, this.opponentPg == ge1.opponentPg, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(score < 6, this.opponentPg.name == ge1.opponentPg.name,this.opponentPg.name == ge1.opponentPg.surname,this.opponentPg.points > ge1.opponentPg.points+4, this.opponentPg == ge1.opponentPg, subsC.hurt == false, subsC.sentOff == false, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then 
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
-		g.setPg(help);
+		g.setSubsPg(help);
 		g.addExplanation("Recently, many points are scored by opponents PG, so the solution is to substitute current PG with the backup PG to improve defense.");
 		update(g);			
 end
@@ -44,11 +44,11 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.pg.personalFouls > ge1.pg.personalFouls+2,this.pg == ge1.pg, subsPg.hurt == false, subsPg.sentOff == false, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.pg.name == ge1.pg.name, this.pg.surname == ge1.pg.surname,this.pg.personalFouls > ge1.pg.personalFouls+1,this.pg == ge1.pg, subsPg.hurt == false, subsPg.sentOff == false, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
-		g.setPg(help);
+		g.setSubsPg(help);
 		g.addExplanation("Recently, PG is commiting to many fouls, so the solution is to substitute current PG with the backup PG.");
 		update(g);	
 	end
@@ -58,11 +58,11 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.sg.personalFouls > ge1.sg.personalFouls+2, this.sg == ge1.sg, subsSg.hurt == false, subsSg.sentOff == false, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.sg.name == ge1.sg.name, this.sg.surname == ge1.sg.surname,this.sg.personalFouls > ge1.sg.personalFouls+1, this.sg == ge1.sg, subsSg.hurt == false, subsSg.sentOff == false, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then
 		Player help = g.getSg();
 		g.setPg(g.getSubsSg());
-		g.setSg(help);
+		g.setSubsSg(help);
 		g.addExplanation("Recently, SG is commiting to many fouls, so the solution is to substitute current SG with the backup SG.");
 		update(g);	
 	end	
@@ -72,11 +72,11 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.sf.personalFouls > ge1.sf.personalFouls+2, this.sf == ge1.sf, subsSf.hurt == false, subsSf.sentOff == false, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.sf.personalFouls > ge1.sf.personalFouls+1,this.sf.name == ge1.sf.name,this.sf.surname == ge1.sf.surname,this.subsSf.hurt == false, this.subsSf.sentOff == false, this after [5s,1m10s] ge1) 
 	then
 		Player help = g.getSf();
 		g.setSf(g.getSubsSf());
-		g.setSf(help);
+		g.setSubsSf(help);
 		g.addExplanation("Recently, SF is commiting to many fouls, so the solution is to substitute current SF with the backup SF.");
 		update(g);	
 	end
@@ -86,11 +86,11 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.pf.personalFouls > ge1.pf.personalFouls+2, this.pf == ge1.pf, subsPf.hurt == false, subsPf.sentOff, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.pf.name == ge1.pf.name, this.pf.surname == ge1.pf.surname,this.pf.personalFouls > ge1.pf.personalFouls+1, this.pf == ge1.pf, subsPf.hurt == false, subsPf.sentOff, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then
 		Player help = g.getPf();
 		g.setPf(g.getSubsPf());
-		g.setPf(help);
+		g.setSubsPf(help);
 		g.addExplanation("Recently, PF is commiting to many fouls, so the solution is to substitute current PF with the backup PF.");
 		update(g);	
 	end	
@@ -100,11 +100,11 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.c.personalFouls > ge1.c.personalFouls+2, this.c == ge1.c, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.c.name == ge1.c.name, this.c.surname == ge1.c.surname,this.c.personalFouls > ge1.c.personalFouls+1, this.c == ge1.c, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then
 		Player help = g.getC();
 		g.setC(g.getSubsC());
-		g.setC(help);
+		g.setSubsC(help);
 		g.addExplanation("Recently, C is commiting to many fouls, so the solution is to substitute current C with the backup C.");
 		update(g);	
 	end	
@@ -114,12 +114,12 @@ lock-on-active true
 	when
 		g : Game()
 		ge1: GameEvent()
-		ge2 : GameEvent(this.opponentC.rebounds > ge1.opponentC.rebounds+2, this.opponentC == ge1.opponentC,subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.opponentC.name == ge1.opponentC.name,this.opponentC.surname == ge1.opponentC.surname, this.opponentC.surname == ge1.opponentC.surname,this.opponentC.rebounds > ge1.opponentC.rebounds+2, this.opponentC == ge1.opponentC,subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then
 		Player help = g.getC();
 		g.setC(g.getSubsC());
-		g.setC(help);
-		g.addExplanation("Recently, opponet C grabs to many rebounds, so the solution is to substitute current C with the backup C.");
+		g.setSubsC(help);
+		g.addExplanation("Recently, opponent C grabs to many rebounds, so the solution is to substitute current C with the backup C.");
 		update(g);	
 	end	
 	
@@ -128,11 +128,11 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent()
-		ge2 : GameEvent(this.opponentPg.assists > ge1.opponentPg.assists+2, this.opponentPg == ge1.opponentPg, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.opponentPg.name == ge1.opponentPg.name,this.opponentPg.surname == ge1.opponentPg.surname,this.opponentPg.assists > ge1.opponentPg.assists+2, this.opponentPg == ge1.opponentPg, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then 
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
-		g.setPg(help);
+		g.setSubsPg(help);
 		g.addExplanation("Recently, opponents PG is making to many assists, so the solution is to substitute current PG with the backup PG to improve defense.");
 		update(g);			
 end	
@@ -142,11 +142,11 @@ lock-on-active true
 	when 
 		g  : Game()
 		ge1 : GameEvent()
-		ge2 : GameEvent(this.opponentPg.steals > ge1.opponentPg.steals+2, this.opponentPg == ge1.opponentPg, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(1m10s) from entry-point DEFAULT
+		ge2 : GameEvent(this.opponentPg.name == ge1.opponentPg.name,this.opponentPg.surname == ge1.opponentPg.surname,this.opponentPg.steals > ge1.opponentPg.steals+2, this.opponentPg == ge1.opponentPg, subsC.hurt == false, subsC.sentOff, this after [5s,1m30s] ge1) over window:time(2m10s) from entry-point DEFAULT
 	then 
 		Player help = g.getPg();
 		g.setPg(g.getSubsPg());
-		g.setPg(help);
+		g.setSubsPg(help);
 		g.addExplanation("Recently, opponents PG is commitins to many steals, so the solution is to substitute current PG with the backup PG to improve offense.");
 		update(g);			
 end	 
@@ -155,11 +155,11 @@ rule "Bad start of a PG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(minute < 2,score<-7,pg.pir < 1,subsPg.hurt==false,subsPg.sentOff==false) over window:time(1m10s) from entry-point DEFAULT 
+        ge : GameEvent(minute < 2,score<-7,pg.pir < 1,subsPg.hurt==false,subsPg.sentOff==false) over window:time(2m10s) from entry-point DEFAULT 
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPg());
-    	g.setPg(helpVariable);	
+    	g.setSubsPg(helpVariable);	
     	g.addExplanation("Less than two minutes has been passed, the team is losing with more then 7 points and pir of PG is less than 1, so the best solution is to substite current PG with the backup PG.");
         update( g );
 end 
@@ -168,7 +168,7 @@ rule "Bad start of a SG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(minute < 2,score<-7,sg.pir < 1,subsSf.hurt==false,subsSf.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(minute < 2,score<-7,sg.pir < 1,subsSf.hurt==false,subsSf.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -181,7 +181,7 @@ rule "Bad start of a SF"
 lock-on-active true
     when
         g : Game()
-        ge : GameEvent(minute < 2,score<-7,sf.pir < 1,subsSf.hurt==false,subsSf.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(minute < 2,score<-7,sf.pir < 1,subsSf.hurt==false,subsSf.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSf();
     	g.setSf(g.getSubsSf());
@@ -194,7 +194,7 @@ rule "Bad start of a PF"
 lock-on-active true
     when
         g : Game()
-        ge : GameEvent(minute < 2,score<-7,pf.pir < 1,subsPf.hurt==false,subsPf.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(minute < 2,score<-7,pf.pir < 1,subsPf.hurt==false,subsPf.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPf();
     	g.setPf(g.getSubsPf());
@@ -207,7 +207,7 @@ rule "Bad start of a C"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(minute < 2,score<-7,c.pir < 1,subsC.hurt==false,subsC.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(minute < 2,score<-7,c.pir < 1,subsC.hurt==false,subsC.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getC();
     	g.setC(g.getSubsC());
@@ -220,7 +220,7 @@ rule "Bad play of a PG and better play of a PG/SG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(pg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(pg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getPgSg());
@@ -233,7 +233,7 @@ rule "Bad play of a PG and better play of a backup PG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(pg.pir < -10,subsPg.pir > -10,subsPg.hurt==false,subsPg.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(pg.pir < -10,subsPg.pir > -10,subsPg.hurt==false,subsPg.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getPg();
     	g.setPg(g.getSubsPg());
@@ -246,7 +246,7 @@ rule "Bad play of a SG and better play of a backup SG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(sg.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(sg.pir < -10,subsSf.pir > -10,subsSf.hurt==false,subsSf.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getSubsSf());
@@ -259,7 +259,7 @@ rule "Bad play of a SG and better play of a PG/SG"
 lock-on-active true
     when
     	g : Game()
-        ge : GameEvent(sg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false) over window:time(1m10s) from entry-point DEFAULT
+        ge : GameEvent(sg.pir < -10,pgSg.pir > -10,pgSg.hurt==false,pgSg.sentOff==false) over window:time(2m10s) from entry-point DEFAULT
     then
     	Player helpVariable = g.getSg();
     	g.setSg(g.getPgSg());

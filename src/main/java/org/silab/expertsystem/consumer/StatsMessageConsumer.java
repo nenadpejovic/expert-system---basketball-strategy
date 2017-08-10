@@ -165,40 +165,52 @@ public class StatsMessageConsumer implements Runnable {
 
 			if(player.getTeam().equals("away")){
 				if(player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getopponentPg()==null){
-					game.setopponentPg(player);
+					game.setopponentPg(player.clone());
+					g.setOpponentPg(player);
 					setted.add(player);
 				} else if(player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getopponentSg()==null) {
-					game.setopponentSg(player);
+					game.setopponentSg(player.clone());
+					g.setOpponentSg(player);
 					setted.add(player);
 				} else if (player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getopponentSf()==null){
-					game.setopponentSf(player);
+					game.setopponentSf(player.clone());
+					g.setOpponentSf(player);
 					setted.add(player);
 				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getopponentPf()==null){
-					game.setopponentPf(player);
+					game.setopponentPf(player.clone());
+					g.setOpponentPf(player);
 					setted.add(player);
 				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getopponentC()==null){
-					game.setopponentC(player);
+					game.setopponentC(player.clone());
+					g.setOpponentC(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getopponentSubsPg()==null){
-					game.setopponentSubsPg(player);
+					game.setopponentSubsPg(player.clone());
+					g.setOpponentSubsPg(player);
 					setted.add(player);
 				} else 	if(!player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getopponentsSubsSg() == null){
-					game.setopponentsSubsSg(player);
+					game.setopponentsSubsSg(player.clone());
+					g.setOpponentsSubsSg(player);
 					setted.add(player);
 				} else if(!player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getopponentSubsSf() == null) {
-					game.setopponentSubsSf(player);
+					game.setopponentSubsSf(player.clone());
+					g.setOpponentSubsSf(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getopponentSubsPf() == null){
-					game.setopponentSubsPf(player);
+					game.setopponentSubsPf(player.clone());
+					g.setOpponentSubsPf(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getopponentSubsC() == null){
-					game.setopponentSubsC(player);
+					game.setopponentSubsC(player.clone());
+					g.setOpponentSubsC(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getopponentsSubsPgSg() == null){
-					game.setopponentsSubsPgSg(player);
+					game.setopponentsSubsPgSg(player.clone());
+					g.setOpponentsSubsPgSg(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getopponentSubsCPf() == null){
-					game.setopponentSubsCPf(player);
+					game.setopponentSubsCPf(player.clone());
+					g.setOpponentSubsCPf(player);
 					setted.add(player);
 				}
 			}
@@ -213,53 +225,63 @@ public class StatsMessageConsumer implements Runnable {
 		for(Player player: players){
 			if(player.getTeam().equals("home")){
 				if(player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getPg()==null){
-					game.setPg(player);
+					game.setPg(player.clone());
+					g.setPg(player);
 					setted.add(player);
 				} else if(player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getSg()==null) {
-					game.setSg(player);
+					game.setSg(player.clone());
+					g.setSg(player);
 					setted.add(player);
 				} else if (player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getSf()==null){
-					game.setSf(player);
+					game.setSf(player.clone());
+					g.setSf(player);
 					setted.add(player);
 				} else if (player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getPf() == null){
-					game.setPf(player);
+					game.setPf(player.clone());
+					g.setPf(player);
 					setted.add(player);
 				} else if (player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getC()==null){
-					game.setC(player);
+					game.setC(player.clone());
+					g.setC(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getSubsPg()==null){
-					game.setSubsPg(player);
+					game.setSubsPg(player.clone());
+					g.setSubsPg(player);
 					setted.add(player);
 				} else 	if(!player.isLineup() && player.getPosition().contains("sg") && !setted.contains(player) && game.getSubsSg()==null){
-					game.setSubsSg(player);
+					game.setSubsSg(player.clone());
+					g.setSubsSg(player);
 					setted.add(player);
 				} else if(!player.isLineup() && player.getPosition().contains("sf") && !setted.contains(player) && game.getSubsSf()==null) {
-					game.setSubsSf(player);
+					game.setSubsSf(player.clone());
+					g.setSubsSf(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getSubsPf()==null){
-					game.setSubsPf(player);
+					game.setSubsPf(player.clone());
+					g.setSubsPf(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("c") && !setted.contains(player) && game.getSubsC()==null){
-					game.setSubsC(player);
+					game.setSubsC(player.clone());
+					g.setSubsC(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pg") && !setted.contains(player) && game.getPgSg()==null){
-					game.setPgSg(player);
+					game.setPgSg(player.clone());
+					g.setPgSg(player);
 					setted.add(player);
 				} else if (!player.isLineup() && player.getPosition().contains("pf") && !setted.contains(player) && game.getcPf()==null){
-					game.setcPf(player);
+					game.setcPf(player.clone());
+					g.setcPf(player);
 					setted.add(player);
 				}
 			}
 		}
 	}
 	
-
-	public void unsetHome(){
-	}
 	
 	
 
 	public void parsePlayers(JSONArray players) {
+		
 		for (Object helpPlayer : players) {
 
 			JSONObject playerObject = (JSONObject) helpPlayer;
@@ -312,7 +334,6 @@ public class StatsMessageConsumer implements Runnable {
 				} else {
 					player.setLineup(false);
 				}
-				
 			}
 		}
 	}

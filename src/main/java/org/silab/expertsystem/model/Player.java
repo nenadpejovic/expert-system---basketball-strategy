@@ -47,6 +47,7 @@ public class Player {
 	private boolean sentOff;
 	
 	private boolean lineup;	
+	
 	public boolean isLineup() {
 		return lineup;
 	}
@@ -214,13 +215,6 @@ public class Player {
 		return averageAssists;
 	}
 
-	public void setAverageAssits(double averageAssists) {
-		this.averageAssists = averageAssists;
-	}
-
-	public double getAverageSteals() {
-		return averageSteals;
-	}
 
 	public void setAverageSteals(double averageSteals) {
 		this.averageSteals = averageSteals;
@@ -322,6 +316,59 @@ public class Player {
 		this.qualityOfDefensePlay = qualityOfDefensePlay;
 	}
 	
+	public Player clone(){
+		Player player = new Player(team, name, surname, position, height, weight, percentageOnePoint, averagePercentageOnePoint, percentageTwoPoints, averagePercentageTwoPoints, percentageThreePoints, averagePercentageThreePoints, points, averagePoints, rebounds, averageRebounds, steals, assists, averageAssists, averageSteals, turnovers, averageTurnovers, time, averageTime, blocks, averageBlocks, pir, indexOfTiredness, personalFouls, hurt, sentOff, lineup, qualityOfDefensePlay);
+		return player;
+	}
+	
+	public Player(String team, String name, String surname, String position,
+			double height, double weight, double percentageOnePoint,
+			double averagePercentageOnePoint, double percentageTwoPoints,
+			double averagePercentageTwoPoints, double percentageThreePoints,
+			double averagePercentageThreePoints, int points,
+			double averagePoints, int rebounds, double averageRebounds,
+			int steals, int assists, double averageAssists,
+			double averageSteals, int turnovers, double averageTurnovers,
+			double time, double averageTime, int blocks, double averageBlocks,
+			int pir, double indexOfTiredness, int personalFouls, boolean hurt,
+			boolean sentOff, boolean lineup, String qualityOfDefensePlay) {
+		super();
+		this.team = team;
+		this.name = name;
+		this.surname = surname;
+		this.position = position;
+		this.height = height;
+		this.weight = weight;
+		this.percentageOnePoint = percentageOnePoint;
+		this.averagePercentageOnePoint = averagePercentageOnePoint;
+		this.percentageTwoPoints = percentageTwoPoints;
+		this.averagePercentageTwoPoints = averagePercentageTwoPoints;
+		this.percentageThreePoints = percentageThreePoints;
+		this.averagePercentageThreePoints = averagePercentageThreePoints;
+		this.points = points;
+		this.averagePoints = averagePoints;
+		this.rebounds = rebounds;
+		this.averageRebounds = averageRebounds;
+		this.steals = steals;
+		this.assists = assists;
+		this.averageAssists = averageAssists;
+		this.averageSteals = averageSteals;
+		this.turnovers = turnovers;
+		this.averageTurnovers = averageTurnovers;
+		this.time = time;
+		this.averageTime = averageTime;
+		this.blocks = blocks;
+		this.averageBlocks = averageBlocks;
+		this.pir = pir;
+		this.indexOfTiredness = indexOfTiredness;
+		this.personalFouls = personalFouls;
+		this.hurt = hurt;
+		this.sentOff = sentOff;
+		this.lineup = lineup;
+		this.qualityOfDefensePlay = qualityOfDefensePlay;
+	}
+
+
 	@Override
 	public boolean equals(Object obj) {
 		if(obj instanceof Player){
